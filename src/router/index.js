@@ -38,15 +38,9 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/favorite.vue')
   },
   {
-    path: '/recommadview',
-    name: 'recommadview',
-    component: () => import(/* webpackChunkName: "about" */ '../views/recommadview.vue'),
-    children:[
-      {
-        path:'shopdetail/:id',
-        component: () => import(/* webpackChunkName: "about" */ '../views/shopdetail.vue')
-      }
-    ]
+    path: '/shopdetail/:id',
+    name: 'shopdetail',
+    component: () => import(/* webpackChunkName: "about" */ '../views/shopdetail.vue'),
   },
   {
     path: '/activity',
@@ -54,24 +48,9 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/activity.vue')
   },
   {
-    path: '/footer',
-    name: 'footer',
-    component: () => import(/* webpackChunkName: "about" */ '../views/footer.vue')
-},
-  {
-    path: '/test',
-    name: 'test',
-    component: () => import(/* webpackChunkName: "about" */ '../views/test.vue')
-  },
-  {
     path: '/categotyitem/:id',
     name: 'categotyitem',
     component: () => import(/* webpackChunkName: "about" */ '../views/categotyitem.vue'),
-  },
-  {
-    path: '/goodsdetail/:id',
-    name: 'goodsdetail',
-    component: () => import(/* webpackChunkName: "about" */ '../views/goodsdetail.vue'),
   },
 ]
 

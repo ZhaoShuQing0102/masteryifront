@@ -1,11 +1,8 @@
 <template>
   <div class="activity">
-  <el-row :gutter="20">
-    <div class="grid-content bg-purple">秒杀活动</div>
-    <div class="grid-content bg-purple">特价活动</div>
-    <div class="grid-content bg-purple">0元抢购</div>
-    <div class="grid-content bg-purple">其他活动</div>
-  </el-row>
+    <div class="aname">
+      <h2>活动专区</h2>
+    </div>
   </div>
 </template>
 
@@ -19,7 +16,12 @@ export default {
 
 .activity{
   position: absolute;
-  margin-top: 600px;
+  margin-top: 500px;
+  margin-left: 600px;
+}
+.aname{
+  position: absolute;
+  margin-top: 550px;
   margin-left: 700px;
 }
 </style>

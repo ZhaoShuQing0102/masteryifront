@@ -1,20 +1,19 @@
 <template>
   <div class="categotyitem">
-<!--    <el-space wrap>-->
-<!--      <el-card class="box-card" style="width: 340px" v-for="item in goods" :key="item.goodsId">-->
-<!--        <div class="card-header">-->
-<!--                <span>-->
-<!--                  <img src="../assets/images/1.jpg"/>-->
-<!--                </span>-->
-<!--          <br/>-->
-<!--          <el-button class="button" type="text">-->
-<!--            <router-link :to="'/recommadview/shopdetail/'+item.goodsId">-->
-<!--              {{item.goodsName}}-->
-<!--            </router-link>-->
-<!--          </el-button>-->
-<!--        </div>-->
-<!--      </el-card>-->
-<!--    </el-space>-->
+    <el-space wrap>
+      <el-card class="box-card" style="width: 340px" v-for="(item,index) in cartlist" :key="item.goodsId">
+        <div class="card-header">
+                <span>
+                  <img :src="url[index].src"/>
+                </span>
+          <br/>
+          <el-button class="button" type="text">
+                      {{item.goodsName}}
+          </el-button>
+        </div>
+      </el-card>
+    </el-space>
+
   </div>
 </template>
 
@@ -26,19 +25,26 @@ export default {
   name: "categotyitem",
   data() {
     return {
-     cartlist:[
-
-     ],
+      cartlist: [],
+      keys: [],
+      url: [
+        {src: require('../assets/images/1.jpg')},
+        {src: require('../assets/images/2.jpg')},
+        {src: require('../assets/images/3.jpg')},
+        {src: require('../assets/images/4.jpg')},
+        {src: require('../assets/images/5.jpg')},
+        {src: require('../assets/images/6.jpg')},
+      ],
     }
   },
-  mounted() {
-    // console.log(this.$route.params.id);
-    axios.post( "http://localhost:8083/goods/categoryGoods",Qs.stringify({category_id:this.$route.params.id}))
-        .then(res=>{
-          this.cartlist = res.data;
-          console.log(res.data)
-        })
-  },
+        mounted(){
+      // console.log(this.$route.params.id);
+      axios.post("http://localhost:8080/goods/categoryGoods", Qs.stringify({category_id: this.$route.params.id}))
+          .then(res => {
+            this.cartlist = res.data.data;
+            console.log(this.cartlist)
+          })
+    },
 }
 
 </script>
@@ -46,6 +52,8 @@ export default {
 <style scoped>
  .categotyitem {
    position: absolute;
-   margin-top: 50px;
+   top: 90%;
+   left: 50%;
+   transform: translate(-50%, -50%);
  }
 </style>
