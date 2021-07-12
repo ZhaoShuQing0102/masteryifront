@@ -20,7 +20,7 @@ export default {
   mounted() {
     // console.log(this.$route.params.id);
     this.id=this.$route.params.id;
-    axios.post("http://localhost:8080/goods/goodById", Qs.stringify({good_id: this.id}))
+    axios.post("http://localhost:8083/goods/goodById", Qs.stringify({good_id: this.id}))
         .then(res => {
           this.shoplist = res.data.data;
           console.log(this.shoplist)

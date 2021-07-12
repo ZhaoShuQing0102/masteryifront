@@ -33,7 +33,7 @@ export default {
   },
   mounted() {
     // console.log(this.$route.params.id);
-    axios.post( "http://localhost:8080/goods/categoryGoods",Qs.stringify({category_id:this.$route.params.id}))
+    axios.post( "http://localhost:8083/goods/categoryGoods",Qs.stringify({category_id:this.$route.params.id}))
         .then(res=>{
           this.cartlist = res.data;
           console.log(res.data)

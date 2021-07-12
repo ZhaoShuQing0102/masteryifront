@@ -49,7 +49,6 @@
 
 <script>
 // @ is an alias to /src
-import Login from "@/views/Login";
 import { defineComponent, ref } from 'vue'
 import axios from "axios";
 import {getHomeAllData} from "../../network/home";
@@ -82,7 +81,7 @@ export default defineComponent({
     }
   },
   mounted() {
-    axios.post("http://localhost:8080/category/getallcategory")
+    axios.post("http://localhost:8083/category/getallcategory")
         .then(res=>{
           this.allcart = res.data.data;
           this.keys=Object.keys(this.allcart)
