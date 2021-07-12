@@ -133,7 +133,6 @@ export default {
                                     this.isCollect = true;
                                     this.collectId = res.data.data;
                                 }
-
                             })
                     }
                 })
@@ -144,6 +143,15 @@ export default {
         addcart() {
             if(this.spec_id != null) {
                 axios.post("http://localhost:8083/cartitem/addcartitem",Qs.stringify({userId:this.userId,goodsId:this.spec_id,goodsNum:this.num}))
+                    .then(res => {
+                        if(res.data.code === 200) {
+                            this.$message({
+                                type:"success",
+                                message:"成功加入购物车",
+                                offset: 150
+                            })
+                        }
+                    })
             }
         },
         collect() {
