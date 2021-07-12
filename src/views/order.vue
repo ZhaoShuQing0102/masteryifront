@@ -17,7 +17,7 @@ export default {
     }
   },
   mounted() {
-    axios.get("http://i6k9nj.natappfree.cc/goods/allGoods")
+    axios.get("http://localhost:8080/goods/allGoods")
         .then(res=>{
           this.links = res.data.data;
           console.log(res.data);
