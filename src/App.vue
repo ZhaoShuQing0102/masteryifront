@@ -104,7 +104,7 @@ export default {}
 //}
 #root-view{
   background-color: #F5F5F5;
-  height: calc(180vh - 50px);
+  //height: calc(180vh - 50px);
   overflow: scroll;
 }
 </style>
