@@ -1,37 +1,72 @@
 <template>
-  <div>
-    <template>
-      购物车
-    </template>
-    <div class="cart-box">
-      <div class="cart-body">
-
-        <van-checkbox-group ref="checkboxGroup">
-          <div class="good-item">
-            <van-checkbox :name="a"/>
-            <div class="good-img"><img src="../assets/images/1.jpg"></div>
-            <div class="good-desc">
-              <div class="good-title">
-                <span>{{ goods.goodsName}}</span>
-                <span>x100</span>
-              </div>
-              <div class="good-btn">
-                <div class="price"><small>¥</small>99.00</div>
-                <van-stepper integer :min="1" :max="10" :model-value="10" name="item.id" async-change />
-              </div>
-            </div>
-          </div>
-        </van-checkbox-group>
-
-
+  <div class="cart" style="background-color: #FFFFFF;border-top:1px solid #FFFFFF;border-left:1px solid #FFFFFF;">
+     <div class="cart-logo" style="float:left;margin-left: 15%;margin-top: 1%;clear: both">
+       <img src="../assets/images/back.png" style="width: 110px; height: 60px">
+     </div>
+     <div class="cart-head" style="float: left;margin-left:16%;margin-top:2%;clear:both">
+       <h3>全部商品</h3>
+     </div>
+    <el-divider style="margin-top: 8%;margin-left: 10%;margin-right: 10%"></el-divider>
+    <div class="cart-body-head">
+      <div class="operation" style=" float: left;margin-left: 16%">
+        <input type = "checkbox"/>
       </div>
-      <van-submit-bar class="submit-all" :price="total * 100" @submit="onSubmit" button-text="结算">
-        <van-checkbox >全选</van-checkbox>
-      </van-submit-bar>
-
-
+      <div style="float: left">
+        <h4>全选</h4>
+      </div>
+      <div class="cart-msg" style="float: left;margin-left: 5%">
+        <h4>商品信息</h4>
+      </div>
+      <div class="cart-cost" style="float: left;margin-left: 27%">
+        <h4>单价</h4>
+      </div>
+      <div class="cart-num" style="float: left;margin-left: 7%">
+        <h4>数量</h4>
+      </div>
+      <div class="cart-money" style="float: left;margin-left: 7%">
+        <h4>金额</h4>
+      </div>
+      <div class="cart-operation" style="float: left;margin-left: 8.5%">
+        <h4>操作</h4>
+      </div>
     </div>
-
+    <div class="cart-body" v-for="item in goods" :key="item.goodsId">
+        <div class="cartlist" style="margin-top:3%;margin-left:14%;margin-right:10%;background-color: beige;height: 200px">
+            <div class="chose" style="float: left;margin-left: 4%;margin-top: 8%">
+              <input type = "checkbox"/>
+            </div>
+            <div class="chose-img" style="float: left;margin-left: 5%; margin-top: 2%">
+              <img src="../assets/images/1.jpg"/>
+            </div>
+            <div class="chose-msg" style="float:left; margin-top: 3%;margin-left: 10%;width: 80px">
+              {{item.goodsName}}篮球服套装定制男大学生比赛运动团购队服黑金色球衣篮球男透气潮
+            </div>
+            <div class="chose-cost" style="float:left; margin-top: 5%;margin-left: 11.5%">
+              {{item.lowPrice}}￥
+            </div>
+            <div class="chose-num" style="float:left; margin-top: 5%; margin-left: 7%">
+              <button style="width: 20px">-</button>
+              <input type="text" style="width:30px"/>
+              <button style="width: 20px">+</button>
+            </div>
+            <div class="chose-money" style="float: left;margin-top: 5%; margin-left: 8.5%">
+              580￥
+            </div>
+            <div class="chose-operation" style="float: left; margin-top: 5%; margin-left: 8%">
+              <h4>移入收藏夹</h4>
+              <br/>
+              <h4>删除</h4>
+            </div>
+        </div>
+    </div>
+    <div class="cart-footer" style="background-color: darkgrey;height: 50px;margin-left: 14%;margin-right: 10%">
+       <div class="already-chose" style="float: right; margin-right: 30%;margin-top: 1%">
+         <h4>已选商品0件</h4>
+       </div>
+      <div class="already-chose" style="float: left;margin-left:2%;margin-top: 1%">
+        <h4>合计：0￥</h4>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -43,11 +78,14 @@ export default {
   name: "ShopCart",
   data() {
     return {
-      goods: [],
+      radio:'1',
+      goods:[
+
+      ],
     }
   },
   mounted() {
-    axios.post("http://localhost:8080/cartitem/showmycart")
+    axios.get("http://localhost:8080/goods/allGoods")
         .then(res => {
           this.goods = res.data.data;
           console.log(res.data);
@@ -58,84 +96,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
-.cart-box {
-  background-color: #FFFFFF;
-  float:left;
-  .cart-body {
-    margin: 60px 0 100px 0;
-    padding-left: 10px;
-    .good-item {
-      display: flex;
-      .good-img {
-        img {
-          width:100px;
-          height:auto;
-        }
-      }
-      .good-desc {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        flex: 1;
-        padding: 20px;
-        .good-title {
-          display: flex;
-          justify-content: space-between;
-        }
-        .good-btn {
-          display: flex;
-          justify-content: space-between;
-          .price {
-            font-size: 16px;
-            color: red;
-            line-height: 28px;
-          }
-          .van-icon-delete {
-            font-size: 20px;
-            margin-top: 4px;
-          }
-        }
-      }
-    }
-    .delete-button {
-      width: 50px;
-      height: 100%;
-    }
-  }
-  .empty {
-    width: 50%;
-    margin: 0 auto;
-    text-align: center;
-    margin-top: 200px;
-    .empty-cart {
-      width: 150px;
-      margin-bottom: 20px;
-    }
-    .van-icon-smile-o {
-      font-size: 50px;
-    }
-    .title {
-      font-size: 16px;
-      margin-bottom: 20px;
-    }
-  }
-  .submit-all {
-    margin-bottom: 50px;
-    .van-checkbox {
-      margin-left: 0px
-    }
-    .van-submit-bar__text {
-      margin-right: 10px
-    }
-    .van-submit-bar__button {
-      background:red;
-    }
-  }
-  .van-checkbox__icon--checked .van-icon {
-    background-color:red;
-    border-color: red;
-  }
+.cart-body {
+  border-top:1px solid #FFFFFF;
+  border-left:1px solid #FFFFFF;
 }
+
 
 </style>
