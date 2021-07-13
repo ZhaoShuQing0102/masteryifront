@@ -48,9 +48,9 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/activity.vue')
   },
   {
-    path: '/categotyitem/:id',
-    name: 'categotyitem',
-    component: () => import(/* webpackChunkName: "about" */ '../views/categotyitem.vue'),
+    path: '/categoryitem/:id',
+    name: 'categoryitem',
+    component: () => import(/* webpackChunkName: "about" */ '../views/categoryitem.vue'),
   },
 ]
 
