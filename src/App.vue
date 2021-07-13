@@ -20,33 +20,6 @@
                             <el-menu-item index="4">
                                 <router-link to="/favorite">收藏夹</router-link>
                             </el-menu-item>
-                            <el-menu-item/>
-                            <el-menu-item/>
-                            <el-menu-item/>
-                            <el-menu-item/>
-                            <el-menu-item/>
-                            <el-menu-item/>
-                            <el-menu-item/>
-                            <el-menu-item/>
-                            <el-menu-item/>
-                            <el-menu-item/>
-                            <el-menu-item/>
-                            <el-menu-item/>
-                            <el-menu-item/>
-                            <el-menu-item/>
-                            <el-menu-item/>
-                            <el-menu-item/>
-                            <el-menu-item/>
-                            <el-menu-item/>
-                            <el-menu-item/>
-                            <el-menu-item/>
-                            <el-menu-item/>
-                            <el-menu-item/>
-                            <el-menu-item/>
-                            <el-menu-item/>
-                            <el-menu-item/>
-                            <el-menu-item/>
-                            <el-menu-item/>
                             <el-menu-item class="mylogin" index="5">
                                 <router-link to="/Login">登录</router-link>
                             </el-menu-item>
