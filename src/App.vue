@@ -48,6 +48,8 @@
 
 <script>
 import Orderfooter from "@/components/orderfooter";
+import {post} from "@/utils/Network";
+
 export default {
   name:'App',
   components: {Orderfooter},

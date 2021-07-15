@@ -1,105 +1,293 @@
 <template>
-  <div class="cart" style="background-color: #FFFFFF;border-top:1px solid #FFFFFF;border-left:1px solid #FFFFFF;">
-     <div class="cart-logo" style="float:left;margin-left: 15%;margin-top: 1%;clear: both">
-       <img src="../assets/images/back.png" style="width: 110px; height: 60px">
-     </div>
-     <div class="cart-head" style="float: left;margin-left:16%;margin-top:2%;clear:both">
-       <h3>全部商品</h3>
-     </div>
-    <el-divider style="margin-top: 8%;margin-left: 10%;margin-right: 10%"></el-divider>
-    <div class="cart-body-head">
-      <div class="operation" style=" float: left;margin-left: 16%">
-        <input type = "checkbox"/>
-      </div>
-      <div style="float: left">
-        <h4>全选</h4>
-      </div>
-      <div class="cart-msg" style="float: left;margin-left: 5%">
-        <h4>商品信息</h4>
-      </div>
-      <div class="cart-cost" style="float: left;margin-left: 27%">
-        <h4>单价</h4>
-      </div>
-      <div class="cart-num" style="float: left;margin-left: 7%">
-        <h4>数量</h4>
-      </div>
-      <div class="cart-money" style="float: left;margin-left: 7%">
-        <h4>金额</h4>
-      </div>
-      <div class="cart-operation" style="float: left;margin-left: 8.5%">
-        <h4>操作</h4>
-      </div>
-    </div>
-    <div class="cart-body" v-for="item in goods" :key="item.goodsId">
-        <div class="cartlist" style="margin-top:3%;margin-left:14%;margin-right:10%;background-color: beige;height: 200px">
-            <div class="chose" style="float: left;margin-left: 4%;margin-top: 8%">
-              <input type = "checkbox"/>
-            </div>
-            <div class="chose-img" style="float: left;margin-left: 5%; margin-top: 2%">
-              <img src="../assets/images/1.jpg"/>
-            </div>
-            <div class="chose-msg" style="float:left; margin-top: 3%;margin-left: 10%;width: 80px">
-              {{item.goodsName}}篮球服套装定制男大学生比赛运动团购队服黑金色球衣篮球男透气潮
-            </div>
-            <div class="chose-cost" style="float:left; margin-top: 5%;margin-left: 11.5%">
-              {{item.lowPrice}}￥
-            </div>
-            <div class="chose-num" style="float:left; margin-top: 5%; margin-left: 7%">
-              <button style="width: 20px">-</button>
-              <input type="text" style="width:30px"/>
-              <button style="width: 20px">+</button>
-            </div>
-            <div class="chose-money" style="float: left;margin-top: 5%; margin-left: 8.5%">
-              580￥
-            </div>
-            <div class="chose-operation" style="float: left; margin-top: 5%; margin-left: 8%">
-              <h4>移入收藏夹</h4>
-              <br/>
-              <h4>删除</h4>
-            </div>
-        </div>
-    </div>
-    <div class="cart-footer" style="background-color: darkgrey;height: 50px;margin-left: 14%;margin-right: 10%">
-       <div class="already-chose" style="float: right; margin-right: 30%;margin-top: 1%">
-         <h4>已选商品0件</h4>
-       </div>
-      <div class="already-chose" style="float: left;margin-left:2%;margin-top: 1%">
-        <h4>合计：0￥</h4>
-      </div>
+<div style="width: 86%;margin-left: 7%">
+  <div style="margin-top: 15px;font-size: 28px;color: RGB(141,141,255);width:100%;padding-bottom: 15px;margin-bottom:5px;width: 100%;border-bottom: 2px solid #E4E7ED">
+    <b>我的购物车</b>
+    <div style="float:right;">
+      <el-button plain round :disabled="len===0" type="danger" icon="el-icon-delete" size="mini" style="margin-top: 10px" @click="delChosed">删除</el-button>
     </div>
   </div>
+  <div style="width: 100%;max-height: 100vh;overflow: auto">
+    <el-table
+        :row-key="(row)=>{return row.id}"
+      :data="tableData.filter(data => !search || data.userName.toLowerCase().includes(search.toLowerCase())).slice((currentPage-1)*pageSize,currentPage*pageSize)"
+      style="width: 100% ;font-size: 16px" @selection-change="handleSelectionChange" ref="multipleTable"
+      :row-style="{height: '80px'}">
+    <el-table-column
+
+        :reserve-selection="true"
+        type="selection"
+        width="80"
+    >
+    </el-table-column>
+    <el-table-column
+        label="商品名称"
+        prop="goodsName"
+        width="280">
+      <template #default="scope">
+        <div style="height: 60px;line-height: 60px;position:relative;" >
+          <img src="../assets/images/1.jpg" alt="" style="width: 60px;height: 60px;line-height: 50px">
+          <span style="margin-left: 10px;height: 50px;line-height: 30px;position:absolute;top: 20px " >{{ scope.row.goodsName }}</span>
+        </div>
+      </template>
+    </el-table-column>
+    <el-table-column
+        label="规格"
+        prop="userName"
+        width="250">
+      <template #default="scope">
+        <el-dropdown trigger="click" @command="handleCommand" size="medium" >
+  <el-link href="javascript:void(0)" :underline="false" style="font-size: 17px" @click="getSpecs(scope.row)">
+    {{ getSpec(scope.row.specs) }}<i class="el-icon-arrow-down el-icon--right"></i>
+  </el-link>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item v-for="item in preChooseSpec" :command="item.id+'-'+scope.row.cartItemId">{{item.spec}}</el-dropdown-item>
+              <el-dropdown-item v-if="preChooseSpec.length===0" :command="0" disabled>没有更多规格了</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+      </template>
+    </el-table-column>
+
+    <el-table-column
+        label="单价"
+        prop="price"
+        width="150">
+      <template #default="scope">
+        <span >{{ scope.row.price }}元</span>
+      </template>
+    </el-table-column>
+
+    <el-table-column
+        label="数量"
+        prop="goodsNum"
+        width="200">
+      <template #default="scope">
+        <el-input-number size="small" v-model="scope.row.goodsNum" @change="handleChange(scope.row)" :min="1" label="描述文字"></el-input-number>
+      </template>
+    </el-table-column>
+    <el-table-column
+        label="小计"
+        width="150">
+      <template #default="scope">
+        <span >{{ scope.row.goodsNum*scope.row.price }}元</span>
+      </template>
+    </el-table-column>
+    <el-table-column
+        align="right"
+    >
+
+      <template #default="scope">
+        <el-link
+            style="font-size: 32px;margin-right: 15px"
+            :underline="false"
+            size="mini"
+
+            href="javascript:void(0)"
+            @click="handleDelete(scope.$index, scope.row)" icon="el-icon-close"></el-link>
+      </template>
+    </el-table-column>
+  </el-table></div>
+ <div style="width: 100%;min-height: 100px;margin-bottom: 15px">
+   <div style="float:left;;font-size: 19px;margin-top: 25px">共 {{tableData.length}} 件商品,已选 {{len}} 件</div>
+   <div style="float: right;color: RGB(245,154,35);margin-top: 20px;position: relative;min-width: 550px;" >
+
+     <div style="float:right ;">
+       <el-button round :disabled="len===0" type="warning" style="width: 150px;height: 50px;font-size: 26px" @click="payNow">立即结算</el-button>
+     </div>
+     <div style="float: right;font-size: 30px;margin-right: 30px;margin-top: 5px;" >合计 <svg class="icon" aria-hidden="true">
+       <use xlink:href="#icon-newbimoney"></use>
+     </svg>{{count}} </div>
+
+   </div>
+
+ </div>
+
+</div>
 </template>
 
 <script>
-import axios from "axios";
-import Qs from "qs";
-
+import {post} from "@/utils/Network";
+import QS from "qs"
 export default {
-  name: "ShopCart",
-  data() {
-    return {
-      radio:'1',
-      goods:[
+  name: "Cart",
+  data(){
+    return{
+      tableData:[],
+      search:'',
+      len:0,
+      currentPage: 1, // 当前页码
+      total: '', // 总条数
+      pageSize: 7, // 每页的数据条数,
+      multipleSelection: [],
+      preChooseSpec:[],
+    }
+  },
+  computed:{
+    count(){
+      let sum=0
+      for(let i in this.multipleSelection){
+        sum+=this.multipleSelection[i].price*this.multipleSelection[i].goodsNum
+      }
+      return sum;
+    },
+  },
+  methods:{
+    handleDelete(index,row){
+      this.$confirm('确定要从购物车中删除该商品?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        center: true})
+          .then(() => {
+            let ids=[]
+            ids.push(row.cartItemId)
+            if(ids.length>0){
+              post("/cartitem/deletecartitembyid", QS.stringify({selectedCartItemId: ids},{indices:false} ))
+                  .then(res => {
+                    this.initData()
+                    this.$message({
+                      type: 'success',
+                      message: '删除成功!'
+                    });
+                  })
+            }
+          }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+    },
+    delChosed(){
+      this.$confirm('要从购物车中删除所选商品?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        center: true})
+          .then(() => {
+            let ids=[]
+            for(let i in this.multipleSelection){
+              ids.push(this.multipleSelection[i].cartItemId)
+            }
+            if(ids.length>0){
+              post("/cartitem/deletecartitembyid", QS.stringify({selectedCartItemId: ids},{indices:false} ))
+                  .then(res => {
+                    this.initData()
+                    this.$message({
+                      type: 'success',
+                      message: '删除成功!'
+                    });
+                  })
+            }
+          }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+    },
 
-      ],
+    getSpec(val){
+      let res=''
+      for(let i in Object.keys(val)){
+        if(i!==Object.keys(val).length-1+'')
+          res= res+val[Object.keys(val)[i]]+"，"
+        else res= res+val[Object.keys(val)[i]]
+      }
+      return res
+    },
+    handleCommand(command){
+
+      post("/cartitem/changegoodid",QS.stringify({cartItemId:command.split("-")[1],goodsId:command.split("-")[0]})).then(res=>{
+        if(res.data.code===200){
+          this.initData()
+          this.$refs.multipleTable.clearSelection();
+          this.$message({
+            type:'success',
+            message:'更改成功'
+          })
+        }
+        else {
+          this.$message({
+            type:'warning',
+            message:'购物车中已存在'
+          })
+        }
+      })
+
+    },
+    getSpecs(val){
+      post("/goods/getallgoodspecs",QS.stringify({goods_id:val.goodsId})).then(res=>{
+        this.preChooseSpec=[]
+        let data=res.data.data[0]
+
+        for(let i in data){
+          if(val.id!==data[i].id){
+            this.preChooseSpec.push({id:data[i].id,spec:this.getSpec(data[i].specDetail)})
+          }
+        }
+      })
+    },
+
+    handleSelectionChange(val){
+      let _this=this
+
+      _this.multipleSelection = val
+      _this.len=_this.multipleSelection.length
+
+    },
+    handleChange(row){
+      console.log(row.cartItemId);
+      post("/cartitem/changegoodsnumbyid",QS.stringify({cartItemId:row.cartItemId,newGoodsNum:row.goodsNum})).then(res=>{
+        if(res.data.code===100){
+        }
+      })
+    },
+    payNow(){
+      let goods=[],num=[],singlePrice=[]
+      for(let i in this.multipleSelection){
+        goods.push(this.multipleSelection[i].goodsId)
+        num.push(this.multipleSelection[i].goodsNum)
+        singlePrice.push(this.multipleSelection[i].price)
+      }
+      if(goods.length>0){
+        post("/order/creatOrder",QS.stringify({goods:goods,num:num,singlePrice:singlePrice,u_id:1,
+          status:1, price:this.count,address:'1'})).then(res=>{
+
+        })
+      }
+    },
+    initData(){
+      post("/cartitem/showmycart",QS.stringify({userId:1})).then(res=>{
+        this.tableData=res.data.data
+        this.total=this.tableData.length
+      })
     }
   },
   mounted() {
-    axios.get("http://localhost:8080/goods/allGoods")
-        .then(res => {
-          this.goods = res.data.data;
-          console.log(res.data);
-        })
-  },
+    this.initData()
+  }
 }
-
 </script>
 
-<style scoped lang="scss">
-.cart-body {
-  border-top:1px solid #FFFFFF;
-  border-left:1px solid #FFFFFF;
+<style>
+.table__row{
+  height: 80px!important;
 }
-
-
+.el-checkbox__inner{
+  width: 20px!important;
+  height: 20px!important;
+}
+.el-checkbox__inner::after{
+  height: 9px!important;
+  left: 7px!important;
+}
+.icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
 </style>
