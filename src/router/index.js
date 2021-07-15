@@ -27,11 +27,11 @@ const routes = [
     name: 'order',
     component: () => import(/* webpackChunkName: "about" */ '../views/order.vue')
   },
-  // {
-  //   path: '/cart',
-  //   name: 'cart',
-  //   component: () => import(/* webpackChunkName: "about" */ '../views/cart.vue')
-  // },
+  {
+    path: '/cart',
+    name: 'Cart',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Cart.vue')
+  },
   {
     path: '/favorite',
     name: 'favorite',

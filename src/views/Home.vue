@@ -23,7 +23,7 @@
                             text-color="#303133">
                             <el-menu-item-group>
                                 <el-menu-item index="1-1" v-for="item in keys" :key="item">
-                                    <router-link :to="'/categoryitem/'+allcart[item][0].categoryId">
+                                    <router-link :to="'/categoryitem/'+allcart[item][0].parentCategoryId">
                                         {{ item }}
                                     </router-link>
                                 </el-menu-item>
