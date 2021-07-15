@@ -14,7 +14,7 @@
                                 </template>
                             </el-menu-item>
                             <el-menu-item index="3">
-                                <router-link to="/cart">
+                                <router-link to="/Cart">
                                     购物车<i class="el-icon-shopping-cart-1"/></router-link>
                             </el-menu-item>
                             <el-menu-item index="4">
