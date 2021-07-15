@@ -2,48 +2,44 @@
     <div class="home">
         <el-container>
             <el-header>
-                <div class="search" style="margin-top: 1%;">
-                    <div class="search_text" style="width:40%;float: left; margin-left: 30%;">
-                        <el-input v-model="input" placeholder="请输入内容"></el-input>
+                <div class="collect-nav" style="height:100px;border-bottom: 1px solid #FFFFFF;">
+                    <div class="yifont" style="float: left;margin-left: 25%;margin-top: 1%">
+                        <img src="../assets/images/back.png" style="height: 70px; width: 140px;">
                     </div>
-                    <div class="search_img" style="float: left;">
-                        <el-button type="primary" icon="el-icon-search">搜索</el-button>
+                    <div class="nav-serach" style="margin-top:2%;margin-left: 5%;float: left;">
+                        <SearchAllGoods></SearchAllGoods>
                     </div>
                 </div>
             </el-header>
-            <el-container>
-                <el-aside width="10%" style="margin-top: 5%;margin-left: 20%">
-                    <div class="category">
-                        <h3>商品分类</h3>
-                        <el-menu
-                            :uniqueOpened="true"
-                            default-active="2"
-                            class="el-menu-vertical-demo"
-                            background-color="#fff"
-                            text-color="#303133">
-                            <el-menu-item-group>
-                                <el-menu-item index="1-1" v-for="item in keys" :key="item">
-                                    <router-link :to="'/categoryitem/'+allcart[item][0].parentCategoryId">
-                                        {{ item }}
-                                    </router-link>
+            <div style="width: 100%">
+                <div class="category" style="float: left;width:10%;margin-top: 5%;margin-left: 20%">
+                    <h3>商品分类</h3>
+                    <el-menu
+                        :uniqueOpened="true"
+                        default-active="2"
+                        class="el-menu-vertical-demo"
+                        background-color="#fff"
+                        text-color="#303133">
+                        <el-menu-item-group>
+                            <router-link v-for="item in keys" :to="'/categoryitem/'+allcart[item][0].parentCategoryId">
+                                <el-menu-item index="1-1" :key="item">
+                                    {{ item }}
                                 </el-menu-item>
-                            </el-menu-item-group>
-                        </el-menu>
-                    </div>
-                </el-aside>
-                <el-main style="margin-top: 3%;">
-                    <div class="image">
-                        <el-carousel :interval="4000" height="500px" style="width:70%">
-                            <el-carousel-item v-for="item in url" :key="item">
-                                <h3 class="medium">
-                                    <el-image :src="item.src" fit="cover">
-                                    </el-image>
-                                </h3>
-                            </el-carousel-item>
-                        </el-carousel>
-                    </div>
-                </el-main>
-            </el-container>
+                            </router-link>
+                        </el-menu-item-group>
+                    </el-menu>
+                </div>
+                <div class="image" style="margin-top: 3%;width:70%;float:left">
+                    <el-carousel :interval="4000" height="400px" style="width:70%">
+                        <el-carousel-item v-for="item in url" :key="item" style="width: 100%">
+                            <h3 class="medium" style="width:100%">
+                                <el-image :src="item.src" fit="fill" style="width: 100%">
+                                </el-image>
+                            </h3>
+                        </el-carousel-item>
+                    </el-carousel>
+                </div>
+            </div>
         </el-container>
         <el-container>
             <activity></activity>
@@ -59,9 +55,9 @@
                     <div v-for="(item,index) in goods" :key="item.goodsId" style="float: left;margin-left: 2%;">
                         <router-link :to="'/shopdetail/'+item.goodsId">
                             <el-image
-                            style="width: 200px; height: 200px"
-                            :src="item.goodsCoverUrl"
-                            :fit="fit"></el-image>
+                                style="width: 200px; height: 200px"
+                                :src="item.goodsCoverUrl"
+                                :fit="fit"></el-image>
                             <br/>
                             <el-button class="button" type="text">
                                 {{ item.goodsName }}
@@ -81,10 +77,11 @@ import axios from "axios";
 import {getHomeAllData} from "../../network/home";
 import Activity from "@/views/activity";
 import Categoryitem from "@/views/categoryitem";
+import SearchAllGoods from "@/components/SearchAllGoods";
 
 export default defineComponent({
     name: 'Home',
-    components: {Categoryitem, Activity},
+    components: {SearchAllGoods, Categoryitem, Activity},
     data() {
         return {
             url: [

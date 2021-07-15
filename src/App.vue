@@ -4,69 +4,81 @@
             <el-head>
                 <div id="nav">
                     <el-affix>
-                        <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-                            <el-menu-item index="1">
-                                <router-link to="/">欢迎来到易大师</router-link>
+                        <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" :router="true"
+                                 active-text-color="#42b983">
+
+                          <el-menu-item index="/" >
+                                欢迎来到易大师
                             </el-menu-item>
-                            <el-menu-item index="2">
+
+
+                            <el-menu-item index="/order" >
                                 <template #title>
-                                    <router-link to="/order">我的订单<i class="el-icon-tickets"/></router-link>
+                                    我的订单<i class="el-icon-tickets"/>
                                 </template>
                             </el-menu-item>
-                            <el-menu-item index="3">
-                                <router-link to="/Cart">
-                                    购物车<i class="el-icon-shopping-cart-1"/></router-link>
+                            <el-menu-item index="/Cart">
+                                    购物车<i class="el-icon-shopping-cart-1"/>
                             </el-menu-item>
-                            <el-menu-item index="4">
-                                <router-link to="/favorite">收藏夹<i class="el-icon-star-on"/></router-link>
+                            <el-menu-item index="/favorite">
+                                收藏夹<i class="el-icon-star-on"/>
                             </el-menu-item>
-                            <el-menu-item class="mylogin" index="5" style="float:right">
-                                <router-link to="/Login">登录</router-link>
+                            <el-menu-item v-if="this.$store.state.notLogin" class="mylogin" index="/Login" style="float:right">
+                                <span >登录</span>
                             </el-menu-item>
-                            <el-menu-item index="6" style="float:right">
-                                <router-link to="/about">
+                            <el-menu-item v-else class="mylogin" index="/Logoff" style="float:right">
+                                <span>退出登录</span>
+                            </el-menu-item>
+                            <el-menu-item index="/about" style="float:right">
                                     个人中心<i class="el-icon-user"/>
-                                </router-link>
                             </el-menu-item>
                         </el-menu>
                     </el-affix>
                 </div>
             </el-head>
-            <el-main>
                 <div id="root-view">
                     <router-view/>
                 </div>
-            </el-main>
            <el-footer>
-               <div id="footer">
-                   <el-affix>
-                       <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-                           <el-menu-item index="1">
-                               联系客服
-                           </el-menu-item>
-                           <el-menu-item index="2">
-                               电话：0000000000
-                           </el-menu-item>
-                           <el-menu-item index="3">
-                               其他
-                           </el-menu-item>
-                           <el-menu-item index="4">
-                               <router-link to="/about">关于我们</router-link>
-                           </el-menu-item>
-                       </el-menu>
-                   </el-affix>
-               </div>
+             <orderfooter></orderfooter>
            </el-footer>
         </el-container>
     </div>
 </template>
 
 <script>
-export default {}
+import Orderfooter from "@/components/orderfooter";
+export default {
+  name:'App',
+  components: {Orderfooter},
+  data(){
+    return{
+      activeIndex:''
+    }
+  },
+    mounted() {
+        if(window.localStorage.getItem("token")===null||window.localStorage.getItem("token")===undefined){
+            this.$store.state.notLogin=true
+        }
+        else{
+            post("/login/token").then(res=>{
+                if(res.data===true) this.$store.state.notLogin=false
+                else this.$store.state.notLogin=true
+            })
+        }
+    },
+  watch: {
+    $route(to, from) {
+      this.activeIndex=to.path
+    }
+  }
+}
 </script>
 <style lang="scss">
 @import "assets/css/base.css";
-
+body{
+    width: 100%;
+}
 #app {
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -74,20 +86,16 @@ export default {}
     text-align: center;
     color: #2c3e50;
 }
-
 #nav {
     //padding: 10px;
-
     a {
         font-weight: bold;
         color: #2c3e50;
-
         &.router-link-exact-active {
             color: #42b983;
         }
     }
 }
-
 //#footer {
 //  width: 100%;
 //  height: 50px;
@@ -105,6 +113,6 @@ export default {}
 #root-view {
     background-color: #F5F5F5;
     //height: calc(180vh - 50px);
-    overflow: scroll;
+    overflow: auto;
 }
 </style>

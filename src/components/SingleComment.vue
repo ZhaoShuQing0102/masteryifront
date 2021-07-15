@@ -36,6 +36,7 @@
 import QS from "qs";
 import SingleReply from "@/components/SingleReply";
 import axios from "axios";
+import {post} from "@/utils/Network";
 export default {
   name: "SingleComment",
   components: {SingleReply},
@@ -67,7 +68,7 @@ export default {
     showAllReply(){
       console.log(this.com);
       this.showReply=true
-      axios.post("http://localhost:8083/comment/replysbycomid",QS.stringify({comId:this.com.commentId})).then(res=>{
+      post("/comment/replysbycomid",QS.stringify({comId:this.com.commentId})).then(res=>{
         this.replys=res.data.data
       })
     },

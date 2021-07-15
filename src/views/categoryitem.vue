@@ -23,6 +23,7 @@
 <script>
 import axios from "axios";
 import Qs from "qs";
+import {post} from "@/utils/Network";
 
 export default {
     name: "categoryitem",
@@ -34,10 +35,10 @@ export default {
         }
     },
     mounted() {
-        axios.post("http://localhost:8083/category/getcategorynamebyid", Qs.stringify({cid: this.$route.params.id}))
+        post("/category/getcategorynamebyid", Qs.stringify({cid: this.$route.params.id}))
             .then(res => {
                 this.category_title = res.data.data;
-                axios.post("http://localhost:8083/goods/categoryGoods", Qs.stringify({category_id: this.$route.params.id}))
+                post("/goods/categoryGoods", Qs.stringify({category_id: this.$route.params.id}))
                     .then(res => {
                         this.catelist = res.data.data;
                     })
