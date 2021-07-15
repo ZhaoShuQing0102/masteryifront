@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 import Home from '../views/Home.vue';
+import {post} from "@/utils/Network";
 
 
 const routes = [
@@ -57,6 +58,27 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
+})
+
+router.beforeEach((to,from,next)=>{
+
+  if(to.path==='/order'||to.path==='/favorite'||to.path==='/Cart'||to.path==='/about'){
+    if(window.localStorage.getItem("token")===null||window.localStorage.getItem("token")===undefined){
+      next({
+        path:'/Login'
+      })
+    }
+    else{
+      post("/login/token").then(res=>{
+        if(res.data===true) next()
+        else next({
+          path:'/Login'
+        })
+      })
+    }
+  }
+
+  next()
 })
 
 export default router

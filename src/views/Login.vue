@@ -67,6 +67,7 @@
 import { defineComponent, ref } from 'vue'
 import Qs from "qs";
 import axios from "axios";
+import {post} from "@/utils/Network";
 
 export default defineComponent({
   data() {
@@ -150,7 +151,7 @@ export default defineComponent({
   },
   methods: {
     submitForm() {
-      axios.post("http://localhost:8083/user/addUser", Qs.stringify({
+      post("/user/addUser", Qs.stringify({
         username: this.ruleForm.username,
         password: this.ruleForm.pass
       }))
@@ -173,16 +174,18 @@ export default defineComponent({
     submitMsg(formName) {
       console.log(this.$refs[formName]);
       this.$refs[formName].validate(valid => {
-        axios.post("http://localhost:8083/user/queryUser", Qs.stringify({
+        post("/login/comfirm", Qs.stringify({
           username: this.LoginMsg.Username,
           password: this.LoginMsg.Pass
         }))
             .then(res => {
-              this.Lkey = res.data.data;
-              console.log(res.data)
-              if (this.Lkey === true) {
+              window.localStorage.setItem("token",res.data.token)
+              console.log(res.data.token)
+              if (res.data.token !== null) {
+                this.$store.commit('changeLogin')
                 this.$alert('登录成功', {
                   confirmButtonText: '确定',
+
                 }).then(() => {
                   this.$router.push({path: '/'})
                 })

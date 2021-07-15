@@ -23,8 +23,11 @@
                             <el-menu-item index="/favorite">
                                 收藏夹<i class="el-icon-star-on"/>
                             </el-menu-item>
-                            <el-menu-item class="mylogin" index="/Login" style="float:right">
-                                登录
+                            <el-menu-item v-if="this.$store.state.notLogin" class="mylogin" index="/Login" style="float:right">
+                                <span >登录</span>
+                            </el-menu-item>
+                            <el-menu-item v-else class="mylogin" index="/Logoff" style="float:right">
+                                <span>退出登录</span>
                             </el-menu-item>
                             <el-menu-item index="/about" style="float:right">
                                     个人中心<i class="el-icon-user"/>
@@ -53,9 +56,17 @@ export default {
       activeIndex:''
     }
   },
-  mounted() {
-    console.log(this.$route)
-  },
+    mounted() {
+        if(window.localStorage.getItem("token")===null||window.localStorage.getItem("token")===undefined){
+            this.$store.state.notLogin=true
+        }
+        else{
+            post("/login/token").then(res=>{
+                if(res.data===true) this.$store.state.notLogin=false
+                else this.$store.state.notLogin=true
+            })
+        }
+    },
   watch: {
     $route(to, from) {
       this.activeIndex=to.path
