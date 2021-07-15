@@ -98,6 +98,7 @@
 import axios from "axios";
 import Qs from "qs";
 import Comment from "@/components/Comment";
+import {post} from "@/utils/Network";
 
 export default {
     name: "goodsdetailview",
@@ -106,7 +107,7 @@ export default {
     },
     data() {
         return {
-            userId:2,
+            userId: '',
             goods: '',
             categoryName: '',
             url: '',
@@ -128,7 +129,7 @@ export default {
     },
     methods: {
         changespec() {
-            axios.post("http://localhost:8083/goods/stockPrice", Qs.stringify({good_id: this.goodsId,specs:this.choosespec},{indices:false}))
+            post("/goods/stockPrice", Qs.stringify({good_id: this.goodsId,specs:this.choosespec},{indices:false}))
                 .then(res => {
                     if(res.data.data == null) {
                         this.singelprice = '---';
@@ -142,7 +143,7 @@ export default {
                         this.stock = res.data.data['stock'];
                         this.spec_id = res.data.data['id'];
                         this.disabled= false;
-                        axios.post("http://localhost:8083/collect/iscollect", Qs.stringify({userId: this.userId, specId: this.spec_id}))
+                        post("/collect/iscollect", Qs.stringify({specId: this.spec_id}))
                             .then(res => {
                                 if(res.data.data === null) {
                                     this.isCollect = false;
@@ -156,11 +157,11 @@ export default {
                 })
         },
         buy() {
-            axios.post("http://localhost:8083/order/creatOrder", Qs.stringify({goods: this.spec_id,num:this.num,singlePrice:this.singelprice,u_id:this.userId,status:0,price:this.singelprice*this.num,address:this.address}))
+            post("/order/creatOrder", Qs.stringify({goods: this.spec_id,num:this.num,singlePrice:this.singelprice,status:0,price:this.singelprice*this.num,address:this.address}))
         },
         addcart() {
             if(this.spec_id != null) {
-                axios.post("http://localhost:8083/cartitem/addcartitem",Qs.stringify({userId:this.userId,goodsId:this.spec_id,goodsNum:this.num}))
+                post("/cartitem/addcartitem",Qs.stringify({goodsId:this.spec_id,goodsNum:this.num}))
                     .then(res => {
                         if(res.data.code === 200) {
                             this.$message({
@@ -174,14 +175,13 @@ export default {
         },
         collect() {
             if(this.isCollect) {
-                axios.post("http://localhost:8083/collect/deletefromcollect", Qs.stringify({collectId:this.collectId}))
+                post("/collect/deletefromcollect", Qs.stringify({collectId:this.collectId}))
                 this.isCollect = false;
                 this.collectId = null;
             } else {
-                axios.post("http://localhost:8083/collect/addtocollect", Qs.stringify({userId:this.userId,goodsId: this.spec_id}))
+                post("/collect/addtocollect", Qs.stringify({goodsId: this.spec_id}))
                     .then(res => {
-                        axios.post("http://localhost:8083/collect/iscollect", Qs.stringify({
-                            userId: this.userId,
+                        post("/collect/iscollect", Qs.stringify({
                             specId: this.spec_id
                         }))
                             .then(res => {
@@ -199,16 +199,16 @@ export default {
     },
     mounted() {
         this.goodsId = this.$route.params.id;
-        axios.post("http://localhost:8083/goods/goodById", Qs.stringify({good_id: this.goodsId}))
+       post("/goods/goodById", Qs.stringify({good_id: this.goodsId}))
             .then(res => {
                 this.goods = res.data.data;
                 this.url = res.data.data.goodsCoverUrl;
-                axios.post("http://localhost:8083/category/getcategorynamebyid", Qs.stringify({cid: this.goods.goodsCategoryId}))
+                post("/category/getcategorynamebyid", Qs.stringify({cid: this.goods.goodsCategoryId}))
                     .then(res => {
                         this.categoryName = res.data.data;
                     })
             })
-        axios.post("http://localhost:8083/goods/goodTest", Qs.stringify({good_id: this.goodsId}))
+        post("/goods/goodTest", Qs.stringify({good_id: this.goodsId}))
             .then(res => {
                 this.specmap = res.data.data;
                 this.speckeys = Object.keys(this.specmap);

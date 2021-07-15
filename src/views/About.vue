@@ -97,6 +97,7 @@
 <script>
 import axios from "axios";
 import Qs from "qs";
+import {post} from "@/utils/Network";
 
 export default {
     data() {
@@ -153,7 +154,7 @@ export default {
         }
     },
     mounted() {
-        axios.post("http://localhost:8083/user/getuser", Qs.stringify({}))
+        post("/user/getuser", Qs.stringify({}))
             .then(res => {
                 this.user = res.data.data;
                 console.log(this.user);
@@ -170,7 +171,7 @@ export default {
             this.$refs[form].validate((valid) => {
                 if (valid) {
                     this.dialogFormVisible = false;
-                    axios.post("http://localhost:8083/user/changeuserinfo",
+                    post("/user/changeuserinfo",
                         Qs.stringify({
                             //userId: this.userId,
                             userName: this.form.user_name,

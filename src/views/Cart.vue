@@ -259,7 +259,7 @@ export default {
       }
     },
     initData(){
-      post("/cartitem/showmycart",QS.stringify({userId:1})).then(res=>{
+      post("/cartitem/showmycart",QS.stringify({})).then(res=>{
         this.tableData=res.data.data
         this.total=this.tableData.length
       })

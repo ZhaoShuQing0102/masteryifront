@@ -1,5 +1,5 @@
 <template>
-      <div class="Login" style="float:left; margin-left: 20%; margin-top: 10%;width: 60%;height:64vh;">
+      <div class="Login" style="float:left; margin-left: 20%; margin-top: 4%;width: 60%;height:64vh;">
           <div class="login-ui" v-if="name===2" style="float: left; margin-left: 5%">
                <div class="l-logo" style="float: left; margin-left: 9%; margin-top: 15%">
                  <img src="../assets/images/back.png" style="width: 400px; height: 200px"/>
@@ -43,10 +43,10 @@
               </div>
               <el-form :model="LoginMsg" status-icon :rules="rules" ref="LoginMsg" label-width="80px" class="demo-login" style="float: left;margin-top: 15%;margin-left: 3%">
                 <el-form-item label="账号:" prop="Username">
-                  <el-input v-model="ruleForm.Username"></el-input>
+                  <el-input v-model="LoginMsg.Username"></el-input>
                 </el-form-item>
                 <el-form-item label="密码:" prop="Pass">
-                  <el-input type="password" v-model="ruleForm.Pass" autocomplete="off"></el-input>
+                  <el-input type="password" v-model="LoginMsg.Pass" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item>
                   <el-button type="primary" @click="submitMsg('LoginMsg')">登录</el-button>
@@ -70,7 +70,7 @@ import axios from "axios";
 
 export default defineComponent({
   data() {
-    var checkNum = (rule, value, callback) => {
+    let checkNum = (rule, value, callback) => {
       if (!value) {
         return callback(new Error('手机号不能为空'));
       }
@@ -83,7 +83,7 @@ export default defineComponent({
         }
       }, 1000);
     };
-    var validatePass = (rule, value, callback) => {
+    let validatePass = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请输入密码'));
       } else {
@@ -93,7 +93,7 @@ export default defineComponent({
         callback();
       }
     };
-    var validatePass2 = (rule, value, callback) => {
+    let validatePass2 = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请再次输入密码'));
       } else if (value !== this.ruleForm.pass) {
@@ -102,7 +102,8 @@ export default defineComponent({
         callback();
       }
     };
-    var validatePass3 = (rule, value, callback) => {
+    let validatePass3 = (rule, value, callback) => {
+      console.log(value);
       if (value === '') {
         callback(new Error('请输入密码'));
       } else {
@@ -125,24 +126,24 @@ export default defineComponent({
       },
       rules: {
         pass: [
-          {validator: validatePass, trigger: 'blur'}
+          {required:true,message:'不能为空',trigger: 'change'},
+          {pattern: /^[a-zA-Z_]\w{6,14}$/, message: '字母开头的7-15位数字、字母或下划线', trigger: 'change'}
         ],
         checkPass: [
-          {validator: validatePass2, trigger: 'blur'}
+          {validator: validatePass2, trigger: 'change'}
         ],
         number: [
           {validator: checkNum, trigger: 'blur'}
         ],
         username: [
-          {required: true, message: '不能为空', trigger: 'blur'},
-          {pattern: /^[\u4E00-\u9FA5]+$/, message: '用户名只能为中文', trigger: 'blur'}
+          {required: true, message: '不能为空', trigger: 'change'},
+          {pattern: /^[0-9a-zA-Z]{7,15}$/, message: '账号只能由7-15位的数字和字母组成', trigger: 'change'}
         ],
         Username: [
-          {required: true, message: '不能为空', trigger: 'blur'},
-          {pattern: /^[\u4E00-\u9FA5]+$/, message: '用户名只能为中文', trigger: 'blur'}
+          {required: true, message: '不能为空', trigger: 'change'},
         ],
         Pass: [
-          {validator: validatePass3, trigger: 'blur'}
+          {validator: validatePass3, trigger: 'change'}
         ]
       },
     }
@@ -156,17 +157,18 @@ export default defineComponent({
           .then(res => {
             this.Rkey = res.data.data;
             console.log(res.data)
+            if (this.Rkey === true) {
+              this.$alert('注册成功', {
+                confirmButtonText: '确定'
+              })
+            }
+            if (this.Rkey === false) {
+              this.$alert('注册失败', {
+                confirmButtonText: '确定'
+              })
+            }
           })
-      if (this.Lkey === true) {
-        this.$alert('注册成功', {
-          confirmButtonText: '确定'
-        })
-      }
-      if (this.Lkey === false) {
-        this.$alert('注册失败', {
-          confirmButtonText: '确定'
-        })
-      }
+
     },
     submitMsg(formName) {
       console.log(this.$refs[formName]);
@@ -178,20 +180,21 @@ export default defineComponent({
             .then(res => {
               this.Lkey = res.data.data;
               console.log(res.data)
+              if (this.Lkey === true) {
+                this.$alert('登录成功', {
+                  confirmButtonText: '确定',
+                }).then(() => {
+                  this.$router.push({path: '/'})
+                })
+              } else {
+                this.Lkey = false;
+                this.$message({
+                  type: 'warning',
+                  message: '不能为空'
+                })
+              }
             })
-        if (this.Lkey === true) {
-          this.$alert('登录成功', {
-            confirmButtonText: '确定',
-          }).then(() => {
-            this.$router.push({path: '/'})
-          })
-        } else {
-          this.Lkey = false;
-          this.$message({
-            type: 'warning',
-            message: '不能为空'
-          })
-        }
+
       })
     }
   }

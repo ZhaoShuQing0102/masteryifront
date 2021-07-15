@@ -8,6 +8,7 @@
 
 <script>
 import axios from "axios";
+import {get} from "@/utils/Network";
 
 export default {
   name: "myorder",
@@ -17,7 +18,7 @@ export default {
     }
   },
   mounted() {
-    axios.get("http://localhost:8083/goods/allGoods")
+    get("/goods/allGoods")
         .then(res=>{
           this.links = res.data.data;
           console.log(res.data);

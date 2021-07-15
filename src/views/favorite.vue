@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import {post} from '../utils/Network'
+import {get,post} from '../utils/Network'
 import QS from "qs"
 import * as math from "mathjs";
 import SearchAllGoods from "@/components/SearchAllGoods";
@@ -77,7 +77,7 @@ export default {
   components: {SearchAllGoods},
   data(){
     return{
-      userId:1,
+      userId:'',
       collect_list:[],
       recommend:[],
       recommend_list:[
@@ -125,11 +125,18 @@ export default {
     }
   },
   mounted() {
-    this.getcollect(this.userId)
-    axios.get('http://localhost:8083/goods/allGoods')
-        .then( res => {
-          this.recommend = res.data.data;
-        })
+      post('/collect/showmycollect',QS.stringify({}))
+              .then(res1 => {
+                  // console.log(res.data.data)
+                  let list_temp = res1.data.data;
+                  this.collect_list = list_temp;
+                  get('/goods/allGoods')
+                      .then( res => {
+                          this.recommend = res.data.data;
+                      })
+                  console.log(this.collect_list)
+                  console.log(this.recommend_list)
+              });
   },
   computed:{
     randomvolume(){
@@ -144,16 +151,6 @@ export default {
     }
   },
   methods:{
-    getcollect(userId){
-      post('/collect/showmycollect',QS.stringify({userId:userId}))
-      .then(res => {
-        // console.log(res.data.data)
-        let list_temp = res.data.data
-        this.collect_list = list_temp
-        console.log(this.collect_list)
-        console.log(this.recommend_list)
-      })
-    },
     deleteit(item){
         post('/collect/deletefromcollect',QS.stringify({collectId:item.collectId}))
       .then(res => {
