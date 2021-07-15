@@ -73,7 +73,15 @@
                     <el-input v-model="form.user_address"></el-input>
                 </el-form-item>
                 <el-form-item label="新头像">
-                    <el-input v-model="form.user_img"></el-input>
+<!--                    <el-input v-model="form.user_img"></el-input>-->
+                    <el-upload
+                        class="avatar-uploader"
+                        action="https://localhost:8083/image/upload"
+                        :show-file-list="false"
+                        :on-success="handleAvatarSuccess"
+                        :before-upload="beforeAvatarUpload">
+                        <i class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
                 </el-form-item>
             </el-form>
             <template #footer>
@@ -124,6 +132,7 @@ export default {
                 user_address: '',
                 user_img: ''
             },
+            imageUrl: '',
             dialogFormVisible:false,
             rules: {
                 user_name: [
@@ -144,7 +153,7 @@ export default {
         }
     },
     mounted() {
-        axios.post("http://localhost:8083/user/getuser", Qs.stringify({userId: this.userId}))
+        axios.post("http://localhost:8083/user/getuser", Qs.stringify({}))
             .then(res => {
                 this.user = res.data.data;
                 console.log(this.user);
@@ -163,7 +172,7 @@ export default {
                     this.dialogFormVisible = false;
                     axios.post("http://localhost:8083/user/changeuserinfo",
                         Qs.stringify({
-                            userId: this.userId,
+                            //userId: this.userId,
                             userName: this.form.user_name,
                             userPwd: this.form.user_pwd2,
                             phoneNum: this.form.phone_num,
@@ -172,14 +181,48 @@ export default {
                         }))
                 }
             })
+        },
+        handleAvatarSuccess(res, file) {
+            this.form.user_img = res.data;
+        },
+        beforeAvatarUpload(file) {
+            const isLt2M = file.size / 1024 / 1024 < 2;
+            if (!isLt2M) {
+                this.$message.error('上传头像图片大小不能超过 2MB!');
+            }
+            return isLt2M;
         }
     }
 }
+
 </script>
 <style>
 .mshow {
     width: 800px;
     height: 700px;
     background: #FFFFFF;
+}
+.avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+}
+.avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+}
+.avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
 }
 </style>

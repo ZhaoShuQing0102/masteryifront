@@ -12,6 +12,7 @@
 import QS from "qs"
 import SingleComment from "@/components/SingleComment";
 import axios from "axios";
+import {post} from "@/utils/Network";
 export default {
   name: "Comment",
   components: {SingleComment},
@@ -26,7 +27,7 @@ export default {
     }
   },
   mounted() {
-    axios.post("http://localhost:8083/comment/comsbygoodid",QS.stringify({goodId:this.goodId})).then(res=>{
+    post("/comment/comsbygoodid",QS.stringify({goodId:this.goodId})).then(res=>{
       this.allComs=res.data.data
     })
 
