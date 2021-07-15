@@ -68,14 +68,28 @@
         </el-main>
 
     </el-container>
-    <div class="info">
-        <el-container style="width:70%; height: 90%; margin-left: 15%">
-            <el-image
-                style="width: 80%; height: 100%; margin-top: 10%; margin-left: 8%; border: 1px solid darkblue"
-                :src="url">
-            </el-image>
-        </el-container>
-    </div>
+<!--    <div class="info">-->
+<!--        <el-container style="width:70%; height: 90%; margin-left: 15%">-->
+<!--            <el-image-->
+<!--                style="width: 80%; height: 100%; margin-top: 10%; margin-left: 8%; border: 1px solid darkblue"-->
+<!--                :src="url">-->
+<!--            </el-image>-->
+<!--        </el-container>-->
+<!--    </div>-->
+
+    <el-container style="width:60%; height: 100%; margin-left: 20%">
+        <el-tabs type="border-card" style="width:90%">
+            <el-tab-pane label="详情">
+                <el-image
+                    style="width:100%"
+                    :src="url">
+                </el-image>
+            </el-tab-pane>
+            <el-tab-pane label="评价">
+                <Comment :goodId=$route.params.id></Comment>>
+            </el-tab-pane>
+        </el-tabs>
+    </el-container>
 
 </template>
 
@@ -83,9 +97,13 @@
 
 import axios from "axios";
 import Qs from "qs";
+import Comment from "@/components/Comment";
 
 export default {
     name: "goodsdetailview",
+    components:{
+        Comment
+    },
     data() {
         return {
             userId:2,

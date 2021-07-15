@@ -10,7 +10,7 @@
                             </el-menu-item>
                             <el-menu-item index="2">
                                 <template #title>
-                                    <router-link to="/order">我的订单</router-link>
+                                    <router-link to="/order">我的订单<i class="el-icon-tickets"/></router-link>
                                 </template>
                             </el-menu-item>
                             <el-menu-item index="3">
@@ -18,15 +18,14 @@
                                     购物车<i class="el-icon-shopping-cart-1"/></router-link>
                             </el-menu-item>
                             <el-menu-item index="4">
-                                <router-link to="/favorite">收藏夹</router-link>
+                                <router-link to="/favorite">收藏夹<i class="el-icon-star-on"/></router-link>
                             </el-menu-item>
-                            <el-menu-item class="mylogin" index="5">
+                            <el-menu-item class="mylogin" index="5" style="float:right">
                                 <router-link to="/Login">登录</router-link>
                             </el-menu-item>
-                            <el-menu-item index="6">
+                            <el-menu-item index="6" style="float:right">
                                 <router-link to="/about">
-                                    <!--          <i class="el-icon-user-solid"/>-->
-                                    关于我们
+                                    个人中心<i class="el-icon-user"/>
                                 </router-link>
                             </el-menu-item>
                         </el-menu>
