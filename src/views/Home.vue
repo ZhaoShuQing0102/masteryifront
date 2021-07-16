@@ -117,7 +117,7 @@ export default defineComponent({
     },
 })
 </script>
-<style>
+<style scoped>
 .home {
     background: #FFFFFF;
 }

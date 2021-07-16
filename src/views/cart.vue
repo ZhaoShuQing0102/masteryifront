@@ -1,6 +1,6 @@
 <template>
 <div style="width: 86%;margin-left: 7%">
-  <div style="margin-top: 15px;font-size: 28px;color: RGB(141,141,255);width:100%;padding-bottom: 15px;margin-bottom:5px;width: 100%;border-bottom: 2px solid #E4E7ED">
+  <div style="margin-top: 15px;font-size: 28px;color: RGB(141,141,255);width:100%;padding-bottom: 15px;margin-bottom:5px;text-align: left;border-bottom: 2px solid #E4E7ED">
     <b>我的购物车</b>
     <div style="float:right;">
       <el-button plain round :disabled="len===0" type="danger" icon="el-icon-delete" size="mini" style="margin-top: 10px" @click="delChosed">删除</el-button>
@@ -25,7 +25,8 @@
         width="280">
       <template #default="scope">
         <div style="height: 60px;line-height: 60px;position:relative;" >
-          <img src="../assets/images/1.jpg" alt="" style="width: 60px;height: 60px;line-height: 50px">
+          <img v-if="scope.row.goodsCoverUrl==='null'||scope.row.goodsCoverUrl===null" src="../assets/images/1.jpg" alt="" style="width: 60px;height: 60px;line-height: 50px">
+          <img v-else :src="scope.row.goodsCoverUrl" alt="" style="width: 60px;height: 60px;line-height: 50px">
           <span style="margin-left: 10px;height: 50px;line-height: 30px;position:absolute;top: 20px " >{{ scope.row.goodsName }}</span>
         </div>
       </template>
@@ -88,7 +89,7 @@
       </template>
     </el-table-column>
   </el-table></div>
- <div style="width: 100%;min-height: 100px;margin-bottom: 15px">
+ <div style="width: 100%;min-height: 100px;margin-bottom: 35px">
    <div style="float:left;;font-size: 19px;margin-top: 25px">共 {{tableData.length}} 件商品,已选 {{len}} 件</div>
    <div style="float: right;color: RGB(245,154,35);margin-top: 20px;position: relative;min-width: 550px;" >
 
@@ -102,6 +103,19 @@
    </div>
 
  </div>
+  <el-dialog title="收货地址" v-model="addrFormVisible">
+    <el-form >
+      <el-form-item label="设置收货地址" :label-width="formLabelWidth">
+        <el-input v-model="userAddr" autocomplete="off"></el-input>
+      </el-form-item>
+    </el-form>
+    <template #footer>
+    <span class="dialog-footer">
+      <el-button @click="addrFormVisible = false">取 消</el-button>
+      <el-button type="primary" @click="payConfirm">立即支付</el-button>
+    </span>
+    </template>
+  </el-dialog>
 
 </div>
 </template>
@@ -121,6 +135,9 @@ export default {
       pageSize: 7, // 每页的数据条数,
       multipleSelection: [],
       preChooseSpec:[],
+      addrFormVisible:false,
+      userAddr:'',
+      formLabelWidth:'120px'
     }
   },
   computed:{
@@ -232,7 +249,7 @@ export default {
 
     handleSelectionChange(val){
       let _this=this
-
+      console.log(val);
       _this.multipleSelection = val
       _this.len=_this.multipleSelection.length
 
@@ -244,19 +261,41 @@ export default {
         }
       })
     },
-    payNow(){
-      let goods=[],num=[],singlePrice=[]
-      for(let i in this.multipleSelection){
-        goods.push(this.multipleSelection[i].goodsId)
-        num.push(this.multipleSelection[i].goodsNum)
-        singlePrice.push(this.multipleSelection[i].price)
-      }
-      if(goods.length>0){
-        post("/order/creatOrder",QS.stringify({goods:goods,num:num,singlePrice:singlePrice,u_id:1,
-          status:1, price:this.count,address:'1'})).then(res=>{
-
+    payConfirm(){
+      if(this.userAddr===''){
+        this.$message({
+          type:'warning',
+          message:'请输入地址!'
         })
       }
+      else {
+        let goods=[],num=[],singlePrice=[]
+        for(let i in this.multipleSelection){
+          goods.push(this.multipleSelection[i].id)
+          num.push(this.multipleSelection[i].goodsNum)
+          singlePrice.push(this.multipleSelection[i].price)
+        }
+        if(goods.length>0){
+          post("/order/creatOrder",QS.stringify({goods:goods,num:num,singlePrice:singlePrice,
+            status:1, price:this.count,address:this.userAddr},{indices:false})).then(res=>{
+            let orderId=res.data.data.order_id
+            this.$router.push({
+              path:'/payfororder',
+              query:{
+                order_id:orderId
+              }
+            })
+          })
+        }
+      }
+    },
+    payNow(){
+      post("/user/getuser").then(res=>{
+        this.userAddr=res.data.data.address
+        this.addrFormVisible=true
+      })
+
+
     },
     initData(){
       post("/cartitem/showmycart",QS.stringify({userId:1})).then(res=>{

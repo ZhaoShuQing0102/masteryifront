@@ -1,55 +1,61 @@
 <template>
-  <div class="collect">
+  <div class="collect" >
 
     <div class="collect-nav" style="height:100px;border-bottom: 1px solid #FFFFFF;">
-      <div class="yifont" style="float: left;margin-left: 25%;margin-top: 1%">
-        <img src="../assets/images/back.png" style="height: 70px; width: 140px;">
+      <div class="yifont" style="float: left;margin-left: 15%;margin-top: 1%">
+        <img src="../assets/images/back.png" style="height: 100px; width: 140px;">
       </div>
-      <div class="nav-serach" style="margin-top:2%;margin-left: 5%;float: left;">
+      <div class="nav-serach" style="margin-top:2%;margin-left: 15%;float: left;">
             <SearchAllGoods></SearchAllGoods>
       </div>
     </div>
-    <div class="collect-body" style="float: left;margin-left: 15%;width: 70%;">
+    <div class="collect-body" style="float: left;margin-left: 6%;width: 88%;background-color: white;min-height: 500px">
       <div class="mycollect" style="width:100%;height:45px;background-color:#F59A23">
           <h3 style="float: left;margin-left: 2%;margin-top: 1%">我的收藏</h3>
       </div>
-      <ul style="margin-left: 60px;margin-top: 30px;overflow: auto">
+      <ul style="margin-left: 60px;margin-top: 30px;overflow: auto;">
         <li v-for="(item,index) in collect_list" :key="index"
             style="width: 150px;height: 220px;
-            margin-right: 25px;margin-bottom: 14px;float: left;position: relative">
+            margin-right: 55px;margin-bottom: 14px;float: left;position: relative;cursor: pointer">
           <div class="delete-icon" style="position: relative;margin-left: 145px;
                                               width: 10px;height: 10px;">
-            <el-button type="danger" size="mini" icon="el-icon-delete" circle @click="deleteit(item)"></el-button>
+            <el-button  type="danger" size="mini" icon="el-icon-delete" circle @click="deleteit(item)"></el-button>
           </div>
-          <div class="goods-info" style="width: 150px;height: 170px;">
-            <div class="goods-img" style="height: 150px;width: 150px">
-              <img src="../assets/images/1.jpg" alt="" width="150px" height="150px">
+          <div class="goods-info" style="width: 150px;height: 170px;" @click="$router.push({path:'/shopdetail/'+item.goodsId})">
+            <div class="goods-img" >
+              <img v-if="item.goodsCoverUrl==='null'||item.goodsCoverUrl===null" :src="defaultUrl" alt="" style="height: 150px;width: 150px">
+              <img v-else :src="item.goodsCoverUrl" alt="" style="height: 150px;width: 150px">
             </div>
             <div class="goods-name" style="height: 15px;width: 150px;
                                     margin-top: 5px;line-height: 15px;text-align: center">
-              {<el-button class="button" type="text">
+              <el-link :underline="false" href="javascript:void(0)" type="primary" style="font-size:20px;">
               {{ item.goodsName }}
-            </el-button>
+            </el-link>
+            </div>
+            <div class="goods-price" style="width: 150px;height: 22px;text-align: center;line-height: 22px;font-size: 20px;margin-top: 15px">
+              {{'￥' + item.price}}
             </div>
           </div>
-          <div class="goods-price" style="width: 150px;height: 22px;text-align: center;line-height: 22px">
-              {{'￥' + item.price}}
-          </div>
+
         </li>
       </ul>
     </div>
 
 
 
-    <div class="collect-footer" style="float:left;margin-left: 15%;width: 70%;">
-        <div class="collect-footer-heads" style="margin-top: 10%;margin-left: 15%;margin-right: 15%">
-          <el-divider>猜你喜欢</el-divider>
+    <div class="collect-footer" style="float:left;width: 100%;">
+        <div class="collect-footer-heads" style="margin-top: 2%;margin-left: 6%;margin-right: 6%;">
+          <el-divider style="font-size: 20px">猜你喜欢</el-divider>
         </div>
-      <div style="margin-left:10%; width:80%">
+      <div style="margin-left:6%; width:88%">
         <div class="recommadview">
-          <div v-for="(item,index) in recommend" :key="item.goodsId" style="float: left;margin-left: 2%;">
+          <div v-for="(item,index) in recommend" :key="item.goodsId" style="float: left;margin-left: 4%;">
             <router-link :to="'/shopdetail/'+item.goodsId">
-              <el-image
+              <el-image v-if="item.goodsCoverUrl==='null'||item.goodsCoverUrl===null"
+                  style="width: 200px; height: 200px"
+                  :src="defaultUrl"
+                  :fit="fit"></el-image>
+              <el-image v-else
                   style="width: 200px; height: 200px"
                   :src="item.goodsCoverUrl"
                   :fit="fit"></el-image>
@@ -66,77 +72,28 @@
 </template>
 
 <script>
-import {get,post} from '../utils/Network'
+import {get, post} from '@/utils/Network'
 import QS from "qs"
 import * as math from "mathjs";
 import SearchAllGoods from "@/components/SearchAllGoods";
-import axios from "axios";
-import {ref} from "vue";
+
 export default {
   name: "favorite",
   components: {SearchAllGoods},
   data(){
     return{
       userId:'',
+      showdel:false,
       collect_list:[],
       recommend:[],
       recommend_list:[
-        {
-          id:1,
-          imgsrc:"../assets/images/1.jpg"
-        },
-        {
-          id:2,
-          imgsrc:"../assets/images/2.jpg"
-        },
-        {
-          id:3,
-          imgsrc:"../assets/images/3.jpg"
-        },
-        {
-          id:4,
-          imgsrc:"../assets/images/4.jpg"
-        },
-        {
-          id:5,
-          imgsrc:"../assets/images/5.jpg"
-        },
-        {
-          id:6,
-          imgsrc:"../assets/images/6.jpg"
-        },
-        {
-          id:7,
-          imgsrc:"../assets/images/1.jpg"
-        },
-        {
-          id:8,
-          imgsrc:"../assets/images/2.jpg"
-        },
-        {
-          id:9,
-          imgsrc:"../assets/images/3.jpg"
-        },
-        {
-          id:10,
-          imgsrc:"../assets/images/4.jpg"
-        },
-      ]
+
+      ],
+      defaultUrl:'http://qw7r9ly4i.hb-bkt.clouddn.com/huawei.jpg'
     }
   },
   mounted() {
-      post('/collect/showmycollect',QS.stringify({}))
-              .then(res1 => {
-                  // console.log(res.data.data)
-                  let list_temp = res1.data.data;
-                  this.collect_list = list_temp;
-                  get('/goods/allGoods')
-                      .then( res => {
-                          this.recommend = res.data.data;
-                      })
-                  console.log(this.collect_list)
-                  console.log(this.recommend_list)
-              });
+      this.initdata()
   },
   computed:{
     randomvolume(){
@@ -154,19 +111,41 @@ export default {
     deleteit(item){
         post('/collect/deletefromcollect',QS.stringify({collectId:item.collectId}))
       .then(res => {
-        console.log(this.collect_list)
-        // router.go(0)
+        this.$message({
+          type:"success",
+          message:'删除成功'
+        })
+        this.initdata()
       })
+    },
+    initdata(){
+      post('/collect/showmycollect',QS.stringify({}))
+          .then(res1 => {
+            // console.log(res.data.data)
+            this.collect_list = res1.data.data;
+            get('/goods/allGoods')
+                .then( res => {
+                  this.recommend = res.data.data;
+                })
+            console.log(this.collect_list)
+            console.log(this.recommend_list)
+          });
     }
   }
 }
 </script>
 
-<style scoped>
+<style >
 ol ul {
   list-style: none;
 }
 a:hover {
   color: #f40!important;
+}
+ul,ol {
+  list-style:none
+}
+.el-divider__text{
+  font-size: 18px!important;
 }
 </style>

@@ -93,9 +93,8 @@ export default {
 <style scoped>
 .footer {
   height: 285px;
-  width: 90%;
+  width: 100%;
   background-color: #f5f5f5;
-  margin-left: 5%;
   /*padding-top: 15px;*/
 }
 .service {

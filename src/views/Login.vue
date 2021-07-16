@@ -1,5 +1,5 @@
 <template>
-      <div class="Login" style="float:left; margin-left: 20%; margin-top: 4%;width: 60%;height:64vh;">
+      <div class="Login" style="float:left; margin-left: 20%; margin-top: 4%;width: 60%;height:80vh;">
           <div class="login-ui" v-if="name===2" style="float: left; margin-left: 5%">
                <div class="l-logo" style="float: left; margin-left: 9%; margin-top: 15%">
                  <img src="../assets/images/back.png" style="width: 400px; height: 200px"/>
@@ -25,10 +25,10 @@
                      <el-button type="primary" @click="submitForm">注册</el-button>
                    </el-form-item>
                  </el-form>
-                 <div @click="name=1" class="register" style="float: left;margin-left: 8%;">
+                 <div @click="name=1" class="register" style="float: left;margin-left: 8%;cursor: pointer">
                    <h4>马上登录</h4>
                  </div>
-                 <div @click="name=3" class="findps" style="float: left;margin-left: 50%;">
+                 <div @click="name=3" class="findps" style="float: left;margin-left: 50%;cursor: pointer">
                    <h4>忘记密码</h4>
                  </div>
                </div>
@@ -52,10 +52,10 @@
                   <el-button type="primary" @click="submitMsg('LoginMsg')">登录</el-button>
                 </el-form-item>
               </el-form>
-              <div @click="name=2" class="register" style="float: left;margin-left: 8%;margin-top: 5%">
+              <div @click="name=2" class="register" style="float: left;margin-left: 8%;margin-top: 5%;cursor: pointer">
                 <h4>立即注册</h4>
               </div>
-              <div @click="name=3" class="findps" style="float: left;margin-left: 50%;margin-top: 5%">
+              <div @click="name=3" class="findps" style="float: left;margin-left: 50%;margin-top: 5%;cursor: pointer">
                 <h4>忘记密码</h4>
               </div>
           </div>
@@ -159,7 +159,9 @@ export default defineComponent({
             this.Rkey = res.data.data;
             console.log(res.data)
             if (this.Rkey === true) {
-              this.$alert('注册成功', {
+              this.$message( {
+                type:'success',
+                message:'注册成功!',
                 confirmButtonText: '确定'
               })
             }
@@ -182,13 +184,14 @@ export default defineComponent({
               window.localStorage.setItem("token",res.data.token)
               console.log(res.data.token)
               if (res.data.token !== null) {
-                this.$store.commit('changeLogin')
-                this.$alert('登录成功', {
-                  confirmButtonText: '确定',
-
-                }).then(() => {
-                  this.$router.push({path: '/'})
+                this.$store.state.notLogin=false
+                this.$message({
+                  type:'success',
+                  message:'登录成功',
                 })
+                setTimeout(()=>{
+                  this.$router.push({path: '/'})
+                },800)
               } else {
                 this.Lkey = false;
                 this.$message({
@@ -227,7 +230,7 @@ export default defineComponent({
   background: #FFFFFF;
   border: 10px;
   width: 1000px;
-  height: 450px;
+  height: 500px;
 }
 .r-input {
   float: left;

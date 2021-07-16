@@ -98,6 +98,9 @@ body{
         }
     }
 }
+.el-footer{
+  padding: 0!important;
+}
 //#footer {
 //  width: 100%;
 //  height: 50px;

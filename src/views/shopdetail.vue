@@ -1,9 +1,15 @@
 <template>
-    <el-container style="width:70%; height: 100%; margin-left: 15%">
+    <el-container style="width:70%; height: 100%; margin-left: 15%;background-color: white">
         <el-aside width="55%">
-            <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-top: 5%; font-size: 24px">
+            <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-top: 5%; font-size: 24px;margin-left: 2%">
                 <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-                <el-breadcrumb-item :to="{ path: '/categoryitem/'+ goods.goodsCategoryId}">{{
+              <el-breadcrumb-item :to="{ path: '/categories',
+                 query:{cname:parentName}}">{{
+                  parentName
+                }}
+              </el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: '/categories',
+                 query:{cname:parentName}}">{{
                         categoryName
                     }}
                 </el-breadcrumb-item>
@@ -15,7 +21,7 @@
             </el-image>
             <div>
                 <div style="float:left; margin-left: 30%">
-                    <router-link :to="{ path: '/category/'+ goods.goodsCategoryId}">
+                    <router-link :to="{ path: '/categories',query:{cname:parentName}}">
                         <el-button type="text" style="color:RGB(70,70,70)">浏览其他商品</el-button>
                     </router-link>
                 </div>
@@ -41,19 +47,34 @@
             <!--            </div>-->
             <div>
                 <div style="font-size: 24px; margin-top: 10%">
-                    <p>选择商品规格及数量：</p>
+                    <p>{{goods.goodsInformation}}</p>
                 </div>
-                <div v-for="(speckey,index) in speckeys " :key="index" style="margin-top:5%">
-                    <el-radio-group v-model="choosespec[index]" @change = "changespec">
-                        <el-radio-button v-for="(specvalue,index2) in Object.values(specmap)[index]" :key="index2" :label="Object.values(specmap)[index][index2].id">{{Object.values(specmap)[index][index2].valueName}}</el-radio-button>
-                    </el-radio-group>
-                </div>
-                <div>
-                    <el-input-number v-model="num" :min="1" :max="10" label="请选择商品数量"  style="float: left; margin-top: 5%"></el-input-number>
-                    <div style="font-size: 12px; float:left; margin-top: 45px; margin-left: 20px">库存：{{stock}}</div>
-                </div>
+              <el-form label-width="80px" style="margin-top: 10%;text-align: left!important;">
+                <el-form-item v-for="(speckey,index) in speckeys " :key="index" :label="speckey" style="margin-right: 80px">
+
+                  <el-radio-group v-model="choosespec[index]" @change = "changespec">
+
+                    <el-radio-button v-for="(specvalue,index2) in Object.values(specmap)[index]" :key="index2" :label="Object.values(specmap)[index][index2].id">{{Object.values(specmap)[index][index2].valueName}}</el-radio-button>
+                  </el-radio-group>
+                </el-form-item>
+                <el-form-item label="数量">
+                  <el-input-number v-model="num" :min="1" :max="stock" label="请选择商品数量"  ></el-input-number>
+                  <div style="font-size: 12px;  margin-top: 5px; margin-left: 20px">库存：{{stock}}</div>
+                </el-form-item>
+              </el-form>
+<!--                <div v-for="(speckey,index) in speckeys " :key="index" style="margin-top:5%">-->
+<!--                  <span style="margin-right: 10px">{{speckey}}</span>-->
+<!--                    <el-radio-group v-model="choosespec[index]" @change = "changespec">-->
+<!--                        <el-radio-button v-for="(specvalue,index2) in Object.values(specmap)[index]" :key="index2" :label="Object.values(specmap)[index][index2].id">{{Object.values(specmap)[index][index2].valueName}}</el-radio-button>-->
+<!--                    </el-radio-group>-->
+<!--                </div>-->
+<!--                <div>-->
+<!--                  <span>数量</span>-->
+<!--                    <el-input-number v-model="num" :min="1" :max="stock" label="请选择商品数量"  style="float: left; margin-top: 5%"></el-input-number>-->
+<!--                    <div style="font-size: 12px; float:left; margin-top: 45px; margin-left: 20px">库存：{{stock}}</div>-->
+<!--                </div>-->
             </div>
-            <p style="font-size: 24px; margin-top: 20%">单价：￥{{singelprice}}</p>
+            <p style="font-size: 24px; margin-top: 10%">单价：￥{{singelprice}}</p>
             <div style="margin-top: 30px">
                 <el-button :disabled="disabled" type="primary" icon="el-icon-circle-plus" @click="addcart" style="background-color:RGB(245,154,35); border-color: RGB(245,154,35)" >加入购物车</el-button>
                 <el-button :disabled="disabled" type="primary" icon="el-icon-goods" @click="FormVisible = true" style="background-color:RGB(245,154,35);border-color: RGB(245,154,35)">现在购买</el-button>
@@ -61,9 +82,9 @@
             <div v-if="FormVisible" style="margin-top: 5%;">
                 <div style="width: 200px; float:left"><el-input v-model="address" placeholder="请输入收货地址"></el-input></div>
                 <el-button @click="FormVisible = false" style="float:left">取消</el-button>
-                <router-link :to="{ path: '/payfororder'}">
+
                     <el-button type="primary" @click="buy" style="float:left;background-color:RGB(245,154,35);border-color: RGB(245,154,35)" >确定购买</el-button>
-                </router-link>
+
             </div>
         </el-main>
 
@@ -77,8 +98,8 @@
 <!--        </el-container>-->
 <!--    </div>-->
 
-    <el-container style="width:60%; min-height: 500px ;margin-left: 20%">
-        <el-tabs type="border-card" style="width:90%">
+    <el-container style="width:70%; min-height: 500px ;margin-left: 15%;background-color: white">
+        <el-tabs type="border-card" style="width:100%">
             <el-tab-pane label="详情">
                 <el-image
                     style="width:100%"
@@ -124,7 +145,8 @@ export default {
             FormVisible: false,
             disabled:false,
             isCollect:false,
-            collectId: null
+            collectId: null,
+            parentName:''
         }
     },
     methods: {
@@ -157,7 +179,15 @@ export default {
                 })
         },
         buy() {
-            post("/order/creatOrder", Qs.stringify({goods: this.spec_id,num:this.num,singlePrice:this.singelprice,status:0,price:this.singelprice*this.num,address:this.address}))
+            post("/order/creatOrder", Qs.stringify({goods: this.spec_id,num:this.num,singlePrice:this.singelprice,status:0,price:this.singelprice*this.num,address:this.address})).then(res=>{
+              let orderId=res.data.data.order_id
+              this.$router.push({
+                path:'/payfororder',
+                query:{
+                  order_id:orderId
+                }
+              })
+            })
         },
         addcart() {
             if(this.spec_id != null) {
@@ -198,34 +228,45 @@ export default {
         }
     },
     mounted() {
-        this.goodsId = this.$route.params.id;
-       post("/goods/goodById", Qs.stringify({good_id: this.goodsId}))
+      this.goodsId = this.$route.params.id;
+      if(this.goodsId>0){
+        post("/goods/goodById", Qs.stringify({good_id: this.goodsId}))
             .then(res => {
-                this.goods = res.data.data;
-                this.url = res.data.data.goodsCoverUrl;
-                post("/category/getcategorynamebyid", Qs.stringify({cid: this.goods.goodsCategoryId}))
-                    .then(res => {
-                        this.categoryName = res.data.data;
-                    })
+              this.goods = res.data.data;
+              this.url = res.data.data.goodsCoverUrl;
+              post("/category/getbothname", Qs.stringify({cid: this.goods.goodsCategoryId}))
+                  .then(res => {
+                    this.categoryName = res.data.data.categoryName;
+                    this.parentName=res.data.data.parentName
+                    post("/goods/goodTest", Qs.stringify({good_id: this.goodsId}))
+                        .then(res => {
+                          this.specmap = res.data.data;
+                          this.speckeys = Object.keys(this.specmap);
+                          for(let index in this.specmap)
+                            this.choosespec.push(this.specmap[index][0].id)
+                          this.changespec()
+
+                        })
+                  })
             })
-        post("/goods/goodTest", Qs.stringify({good_id: this.goodsId}))
-            .then(res => {
-                this.specmap = res.data.data;
-                this.speckeys = Object.keys(this.specmap);
-                for(let index in this.specmap)
-                    this.choosespec.push(this.specmap[index][0].id)
-                this.changespec()
-            })
+
+      }
+
+
+
     },
 }
 </script>
 
-<style scoped>
+<style >
 .info{
     background-color:#f5f5f5;
 }
-.is-disabled{
+.el-button--primary .is-disabled{
     background-color:RGB(243,209,158) !important;
     border-color:RGB(243,209,158) !important;
+}
+.el-form-item__label{
+  text-align: left!important;
 }
 </style>

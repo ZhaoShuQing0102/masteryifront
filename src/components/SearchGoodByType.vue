@@ -1,7 +1,11 @@
 <template>
   <div>
-    <el-input v-model="searchContent" placeholder="请输入搜索内容" style="width: 200px"></el-input>
-    <el-link class="el-input__icon" href="javascript:void(0)" icon="el-icon-search" @click="search" style="font-size: 25px;margin-right: 6px" type="primary"></el-link>
+    <el-input v-model="searchContent" placeholder="请输入搜索内容" style="width: 500px;">
+      <template #suffix>
+        <el-link class="el-input__icon" href="javascript:void(0)" icon="el-icon-search" @click="search" style="font-size: 25px;margin-right: 6px" type="primary"></el-link>
+        <!--      <i class="el-icon-search el-input__icon" @click="search" style="font-size: 20px;margin-right: 6px"> </i>-->
+      </template>
+    </el-input>
   </div>
 </template>
 

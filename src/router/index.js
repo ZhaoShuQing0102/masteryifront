@@ -2,13 +2,22 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import Home from '../views/Home.vue';
 import {post} from "@/utils/Network";
+import cart from "@/views/cart";
+import favorite from "@/views/favorite";
+import Orderdetail from "@/views/Orderdetail";
+import shouye from "@/views/shouye";
+import secondskill from "@/views/secondskill";
+import categories from "@/views/categories";
+import confirmorder from "@/views/confirmorder";
+import TradeSuccess from "@/views/TradeSuccess";
+import SearchPage from "@/views/SearchPage";
 
 
 const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home,
+    component: shouye,
   },
   {
     path: '/about',
@@ -29,14 +38,19 @@ const routes = [
     component: () => import('../views/order')
   },
   {
+    path:'/Orderdetail/',
+    name: 'Orderdetail',
+    component: Orderdetail
+  },
+  {
     path: '/cart',
     name: 'Cart',
-    component: () => import(/* webpackChunkName: "about" */ '../views/cart.vue')
+    component: cart
   },
   {
     path: '/favorite',
     name: 'favorite',
-    component: () => import(/* webpackChunkName: "about" */ '../views/favorite.vue')
+    component: favorite
   },
   {
     path: '/shopdetail/:id',
@@ -49,10 +63,30 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/activity.vue')
   },
   {
+    path: '/secondskill',
+    component: secondskill
+  },
+  {
     path: '/categoryitem/:id',
     name: 'categoryitem',
     component: () => import(/* webpackChunkName: "about" */ '../views/categoryitem.vue'),
   },
+  {
+    path: '/categories',
+    component: categories
+  },
+  {
+    path: '/payfororder',
+    component: confirmorder
+  },
+  {
+    path:'/tradesuccess',
+    component: TradeSuccess
+  },
+  {
+    path: '/search',
+    component: SearchPage
+  }
 ]
 
 const router = createRouter({
@@ -62,7 +96,8 @@ const router = createRouter({
 
 router.beforeEach((to,from,next)=>{
 
-  if(to.path==='/order'||to.path==='/favorite'||to.path==='/cart'||to.path==='/about'){
+  if(to.path==='/order'||to.path==='/favorite'||to.path==='/cart'||to.path==='/about'
+      ||to.path==='/payfororder'||to.path==='/tradesuccess'||to.path==='/secondskill'){
     if(window.localStorage.getItem("token")===null||window.localStorage.getItem("token")===undefined){
       next({
         path:'/login'
@@ -80,6 +115,9 @@ router.beforeEach((to,from,next)=>{
     }
   }
   else next()
+})
+router.afterEach((to,from,next)=>{
+  window.scroll(0,0)
 })
 
 export default router
