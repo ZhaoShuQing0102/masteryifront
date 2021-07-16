@@ -54,7 +54,7 @@
             </router-link>
 
         </div>
-        <el-dialog title="收货地址" v-model="dialogFormVisible" width="30%">
+        <el-dialog title="修改个人信息" v-model="dialogFormVisible" width="30%">
             <el-form :model="form" :rules="rules" ref="form">
                 <el-form-item label="用户名" prop="user_name">
                     <el-input v-model="form.user_name" ></el-input>
@@ -76,7 +76,7 @@
 <!--                    <el-input v-model="form.user_img"></el-input>-->
                     <el-upload
                         class="avatar-uploader"
-                        action="https://localhost:8083/image/upload"
+                        action="http://localhost:8083/image/upload"
                         :show-file-list="false"
                         :on-success="handleAvatarSuccess"
                         :before-upload="beforeAvatarUpload">
