@@ -1,13 +1,13 @@
 <template>
 <div style="width:100%">
-  <div style="position: relative">
+  <div style="position: relative;text-align: left">
     <el-avatar :size="55" :src="circleUrl"></el-avatar>
     <span style="margin-left: 25px;position:absolute;top:0;font-size: 20px;color: #606266">{{singleReply.userName}}</span>
     <span style="margin-left: 25px;color: #909399;font-size: 14px">
     {{singleReply.ftime}}
   </span>
   </div>
-  <div style="width: 80%;margin-left: 10%;margin-top: 15px;margin-bottom: 30px">
+  <div style="width: 80%;margin-left: 10%;margin-top: 15px;margin-bottom: 30px;text-align: left">
     {{singleReply.content}}
   </div>
 </div>

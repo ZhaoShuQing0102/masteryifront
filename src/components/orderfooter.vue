@@ -2,38 +2,37 @@
   <div class="footer">
 <!--    <el-footer class="footer" height="260px">-->
       <div class="service">
-        <ul class="slogen" style="margin-left:28%;width:72%">
+        <ul class="slogen" style="width:100%">
           <li class="first-slogn">
             <h5 class="h51"></h5>
             <div class="service-txt">
-              <h4>品类齐全</h4>
-              <p>轻松购物</p>
+              <h4><b>品类齐全,轻松购物</b></h4>
+
             </div>
           </li>
           <li>
             <h5 class="h52"></h5>
             <div class="service-txt">
-              <h4>多仓直发</h4>
-              <p>极速配送</p>
+              <h4><b>多仓直发,极速配送</b></h4>
+
             </div>
           </li>
           <li>
             <h5 class="h53"></h5>
             <div class="service-txt">
-              <h4>正品行货</h4>
-              <p>精致服务</p>
+              <h4><b>正品行货,精致服务</b></h4>
+
             </div>
           </li>
           <li>
             <h5 class="h54"></h5>
             <div class="service-txt">
-              <h4>天天低价</h4>
-              <p>畅选无忧</p>
+              <h4><b>天天低价,畅选无忧</b></h4>
             </div>
           </li>
         </ul>
       </div>
-      <div class="help" style="margin-left:15%">
+      <div class="help" >
         <dl>
           <dt>购物指南</dt>
           <dd><a href="#">购物流程</a></dd>
@@ -106,6 +105,7 @@ export default {
 .service .slogen {
   height: 65px;
   width: 100%;
+
   /*padding-left: 10%;*/
 }
 
@@ -113,11 +113,12 @@ export default {
   float: left;
   height: 40px;
   width:15%;
+  margin-left: 8%;
   padding-top: 10px;
 }
 .service ul li h5 {
   float: left;
-  width: 15%;
+  width: 17%;
   height: 40px;
   /*background-color: purple;*/
 
@@ -139,20 +140,22 @@ export default {
 .service-txt {
     float: left;
     margin-left: 5%;
-    margin-top: 1%;
+    margin-top: 2%;
+    font-size: 26px;
 }
 .service-txt h4 {
   padding-top: 5px;
-  font-size: 12px;
+  font-size: 18px;
 }
 .service-txt p {
   font-size: 10px;
 }
 .help {
-  height: 120px;
+  height: 140px;
   border-bottom: 1px solid #ccc;
   padding-top: 15px;
-  padding-left: 40px;
+  width: 90%;
+  margin-left: 5%;
 }
 .help dl {
   float: left;
@@ -191,5 +194,8 @@ export default {
   font-weight: 400;
   font-size: 12px;
   line-height: 15px;
+}
+ul,ol {
+  list-style:none
 }
 </style>

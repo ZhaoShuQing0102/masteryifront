@@ -76,7 +76,8 @@
 <!--                    <el-input v-model="form.user_img"></el-input>-->
                     <el-upload
                         class="avatar-uploader"
-                        action="https://localhost:8083/image/upload"
+                        action="http://localhost:8083/image/upload"
+                        :headers="header"
                         :show-file-list="false"
                         :on-success="handleAvatarSuccess"
                         :before-upload="beforeAvatarUpload">
@@ -133,6 +134,9 @@ export default {
                 user_address: '',
                 user_img: ''
             },
+            header:{
+              'token':window.localStorage.getItem('token')
+            },
             imageUrl: '',
             dialogFormVisible:false,
             rules: {
@@ -184,13 +188,14 @@ export default {
             })
         },
         handleAvatarSuccess(res, file) {
-            this.form.user_img = res.data;
+          this.user.userImgUrl = res.data;
         },
         beforeAvatarUpload(file) {
             const isLt2M = file.size / 1024 / 1024 < 2;
             if (!isLt2M) {
                 this.$message.error('上传头像图片大小不能超过 2MB!');
             }
+
             return isLt2M;
         }
     }

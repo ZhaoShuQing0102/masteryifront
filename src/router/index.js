@@ -26,12 +26,12 @@ const routes = [
   {
     path: '/order',
     name: 'order',
-    component: () => import(/* webpackChunkName: "about" */ '../views/order.vue')
+    component: () => import('../views/order')
   },
   {
     path: '/cart',
     name: 'Cart',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Cart.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/cart.vue')
   },
   {
     path: '/favorite',
@@ -62,23 +62,24 @@ const router = createRouter({
 
 router.beforeEach((to,from,next)=>{
 
-  if(to.path==='/order'||to.path==='/favorite'||to.path==='/Cart'||to.path==='/about'){
+  if(to.path==='/order'||to.path==='/favorite'||to.path==='/cart'||to.path==='/about'){
     if(window.localStorage.getItem("token")===null||window.localStorage.getItem("token")===undefined){
       next({
-        path:'/Login'
+        path:'/login'
       })
     }
     else{
       post("/login/token").then(res=>{
+        console.log(res.data);
         if(res.data===true) next()
         else next({
-          path:'/Login'
+          path:'/login',
+          component: () => import(/* webpackChunkName: "about" */ '../views/Login.vue')
         })
       })
     }
   }
-
-  next()
+  else next()
 })
 
 export default router

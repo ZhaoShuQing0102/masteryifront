@@ -1,0 +1,77 @@
+.main-nav {
+    height:80px;
+    width: 90%;
+    margin-left: 5%;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+}
+.nav-title {
+    float: left;
+}
+h3{
+    padding-left: 50px;
+    line-height: 80px;
+    color:#409EFF;
+    font-weight: 700;
+    font-size: 25px;
+    text-indent: 4em;
+}
+.nav-serach {
+    float: left;
+    width: 30%;
+    height: 80px;
+    margin-left: 40%;
+}
+.nav-serach input {
+    margin: 20px 0;
+    width:200px;
+    height:40px;
+    border:1px solid #00a4ff;
+    border-radius: 10px;
+    font-size: 15px;
+    padding-left: 10px;
+    /*margin: auto 0;*/
+}
+.waiter {
+    width:60px;
+    height: 130px;
+    position: fixed;
+    right: 0;
+    bottom:150px;
+}
+img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+}
+a {
+    text-decoration: none;
+}
+ul,ol {
+    list-style:none
+}
+/*class main-body css*/
+.main-body .order-nav .el-col{
+    border-radius: 4px;
+}
+.main-body .grid-content {
+    border-radius: 4px;
+    /*background-color: pink;*/
+    height: 60px;
+    font-size: 18px;
+    color: #555555;
+    font-weight: 400;
+    line-height: 60px;
+    text-indent: 1em;
+}
+.main-body .el-row {
+    margin: 10px 30px;
+}
+.order-nav {
+    width: 90%;
+    padding:0 65px;
+    border-bottom: 1px solid rgb(51, 51, 51);
+}
+
+

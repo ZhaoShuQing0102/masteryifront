@@ -1,6 +1,6 @@
 <template>
-<div style="width: 100%;height: 500px">
-  <div id="commentContain" style="height: 400px;width: 90%;margin-left: 5%">
+<div style="width: 100%;min-height: 500px">
+  <div id="commentContain" style="min-height: 400px;width: 90%;margin-left: 5%">
     <SingleComment v-for="item in allComs" :comment="item"></SingleComment>
     <br>
   </div>

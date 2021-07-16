@@ -12,7 +12,7 @@
       </svg>
     </span>
   </div>
-  <div style="width: 75%;margin-left: 9%;min-height: 160px;margin-top: 15px;font-size: 16px;color: #303133">
+  <div style="width: 80%;margin-left: 9%;min-height: 160px;margin-top: 15px;font-size: 16px;color: #303133;text-align: left">
     {{com.content}}
   </div>
   <div id="comfoot" style="width: 100%;text-align: right;margin-bottom: 15px">

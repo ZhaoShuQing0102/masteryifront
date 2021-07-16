@@ -17,7 +17,7 @@
                                     我的订单<i class="el-icon-tickets"/>
                                 </template>
                             </el-menu-item>
-                            <el-menu-item index="/Cart">
+                            <el-menu-item index="/cart">
                                     购物车<i class="el-icon-shopping-cart-1"/>
                             </el-menu-item>
                             <el-menu-item index="/favorite">

@@ -77,7 +77,7 @@
 <!--        </el-container>-->
 <!--    </div>-->
 
-    <el-container style="width:60%; height: 100%; margin-left: 20%">
+    <el-container style="width:60%; min-height: 500px ;margin-left: 20%">
         <el-tabs type="border-card" style="width:90%">
             <el-tab-pane label="详情">
                 <el-image
