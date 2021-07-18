@@ -186,13 +186,12 @@ export default {
       return totalPrice
     },
     randomfreight(){
-      let rannum = math.round(math.random()*(20-0.5)+0.5)
+      let rannum = math.round(math.random()*(9-0.5)+0.5)
       // console.log(rannum)
       return rannum
     }
   },
   mounted() {
-    console.log("2222222222222222222")
     this.endTime=Moment().add(30, "minutes").format("YYYY-MM-DD HH:mm:ss")
 
     this.order_id=this.$route.query.order_id

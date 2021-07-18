@@ -300,7 +300,7 @@ export default {
   },
   computed:{
     randomdiscounts(){
-      let rannum = math.round(math.random()*(3-0.5)+0.5)
+      let rannum = math.round(math.random()*(5-0.5)+0.5)
       // console.log(rannum)
       return rannum
     }
