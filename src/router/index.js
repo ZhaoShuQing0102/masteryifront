@@ -147,7 +147,7 @@ router.beforeEach((to,from,next)=>{
   if(to.meta.title){
     document.title=to.meta.title
   }
-  if(to.path==='/order'||to.path==='/favorite'||to.path==='/cart'||to.path==='/about'
+  if(to.path==='/order'||to.path==='/favorite'||to.path==='/cart'||to.path==='/profiles'
       ||to.path==='/payfororder'||to.path==='/tradesuccess'||to.path==='/secondskill'){
     if(window.localStorage.getItem("token")===null||window.localStorage.getItem("token")===undefined){
       document.title="登录"

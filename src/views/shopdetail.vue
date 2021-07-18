@@ -150,6 +150,24 @@ export default {
         }
     },
     methods: {
+        islogged(){
+          if(window.localStorage.getItem("token")===null||window.localStorage.getItem("token")===undefined){
+            this.$store.state.notLogin=true
+            return false;
+          }
+          else{
+            post("/login/token").then(res=>{
+              if(res.data===true) {
+                this.$store.state.notLogin = false
+                return true;
+              }
+              else {
+                this.$store.state.notLogin = true
+                return false;
+              }
+            })
+          }
+        },
         changespec() {
             post("/goods/stockPrice", Qs.stringify({good_id: this.goodsId,specs:this.choosespec},{indices:false}))
                 .then(res => {
@@ -179,52 +197,61 @@ export default {
                 })
         },
         buy() {
-            post("/order/creatOrder", Qs.stringify({goods: this.spec_id,num:this.num,singlePrice:this.singelprice,status:0,price:this.singelprice*this.num,address:this.address})).then(res=>{
-              let orderId=res.data.data.order_id
-              this.$router.push({
-                path:'/payfororder',
-                query:{
-                  order_id:orderId
-                }
+            if(this.islogged()){
+              post("/order/creatOrder", Qs.stringify({goods: this.spec_id,num:this.num,singlePrice:this.singelprice,status:0,price:this.singelprice*this.num,address:this.address})).then(res=>{
+                let orderId=res.data.data.order_id
+                this.$router.push({
+                  path:'/payfororder',
+                  query:{
+                    order_id:orderId
+                  }
+                })
               })
-            })
+            }
+            else this.$router.push({path:'/login'})
         },
         addcart() {
-            if(this.spec_id != null) {
+            if(this.islogged()){
+              if(this.spec_id != null) {
                 post("/cartitem/addcartitem",Qs.stringify({goodsId:this.spec_id,goodsNum:this.num}))
                     .then(res => {
-                        if(res.data.code === 200) {
-                            this.$message({
-                                type:"success",
-                                message:"成功加入购物车",
-                                offset: 150
-                            })
-                        }
+                      if(res.data.code === 200) {
+                        this.$message({
+                          type:"success",
+                          message:"成功加入购物车",
+                          offset: 150
+                        })
+                      }
                     })
+              }
             }
+            else this.$router.push({path:'/login'})
         },
         collect() {
-            if(this.isCollect) {
+            if(this.islogged()){
+              if(this.isCollect) {
                 post("/collect/deletefromcollect", Qs.stringify({collectId:this.collectId}))
                 this.isCollect = false;
                 this.collectId = null;
-            } else {
+              } else {
                 post("/collect/addtocollect", Qs.stringify({goodsId: this.spec_id}))
                     .then(res => {
-                        post("/collect/iscollect", Qs.stringify({
-                            specId: this.spec_id
-                        }))
-                            .then(res => {
-                                if (res.data.data === null) {
-                                    this.isCollect = false;
-                                    this.collectId = null;
-                                } else {
-                                    this.isCollect = true;
-                                    this.collectId = res.data.data;
-                                }
-                            })
+                      post("/collect/iscollect", Qs.stringify({
+                        specId: this.spec_id
+                      }))
+                          .then(res => {
+                            if (res.data.data === null) {
+                              this.isCollect = false;
+                              this.collectId = null;
+                            } else {
+                              this.isCollect = true;
+                              this.collectId = res.data.data;
+                            }
+                          })
                     })
+              }
             }
+            else this.$router.push({path:'/login'})
         }
     },
     mounted() {

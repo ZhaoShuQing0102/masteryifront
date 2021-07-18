@@ -51,6 +51,24 @@ export default {
     }
   },
   methods:{
+    islogged(){
+      if(window.localStorage.getItem("token")===null||window.localStorage.getItem("token")===undefined){
+        this.$store.state.notLogin=true
+        return false;
+      }
+      else{
+        post("/login/token").then(res=>{
+          if(res.data===true) {
+            this.$store.state.notLogin = false
+            return true;
+          }
+          else {
+            this.$store.state.notLogin = true
+            return false;
+          }
+        })
+      }
+    },
     getSpec(val){
       if(val!==undefined) {
         let res = ''
@@ -74,29 +92,33 @@ export default {
       })
     },
     newComment(){
-      if(this.newComm===''){
-        console.log(this.com);
-        this.$message({
-          type: 'warning',
-          message: '请输入内容'
-        });
-      }
-      else {
-        post('/comment/addreply',QS.stringify({goodId:this.com.toGoodId,content:this.newComm,toComId:this.com.commentId})).then(res=>{
-          if(res.data.code===200){
+      if(this.islogged()){
+        if(this.newComm===''){
+          console.log(this.com);
+          this.$message({
+            type: 'warning',
+            message: '请输入内容'
+          });
+        }
+        else {
+          post('/comment/addreply',QS.stringify({goodId:this.com.toGoodId,content:this.newComm,toComId:this.com.commentId})).then(res=>{
+            if(res.data.code===200){
               post("/comment/replysbycomid",QS.stringify({comId:this.com.commentId})).then(res=>{
-              this.replys=res.data.data
-              this.$message({
-                type: 'success',
-                message: '评论成功'
-              });
-              this.newComm='';
-              this.showReply=true
-            })
+                this.replys=res.data.data
+                this.$message({
+                  type: 'success',
+                  message: '评论成功'
+                });
+                this.newComm='';
+                this.showReply=true
+              })
 
-          }
-        })
+            }
+          })
+        }
       }
+      else this.$router.push({path:'/login'})
+
     }
   },
   props:{
