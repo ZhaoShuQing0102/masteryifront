@@ -92,7 +92,7 @@ export default {
 
 <style scoped>
 .footer {
-  height: 285px;
+  height: 300px;
   width: 100%;
   background-color: #f5f5f5;
   /*padding-top: 15px;*/
@@ -171,6 +171,7 @@ export default {
 }
 .help dd {
   font-size: 12px;
+  margin-top: 5px!important;
 }
 .help dd a{
   color: black;

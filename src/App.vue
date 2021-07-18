@@ -12,26 +12,27 @@
                             </el-menu-item>
 
 
-                            <el-menu-item index="/order" >
-                                <template #title>
-                                    我的订单<i class="el-icon-tickets"/>
-                                </template>
-                            </el-menu-item>
-                            <el-menu-item index="/cart">
-                                    购物车<i class="el-icon-shopping-cart-1"/>
-                            </el-menu-item>
-                            <el-menu-item index="/favorite">
-                                收藏夹<i class="el-icon-star-on"/>
-                            </el-menu-item>
+
                             <el-menu-item v-if="this.$store.state.notLogin" class="mylogin" index="/Login" style="float:right">
                                 <span >登录</span>
                             </el-menu-item>
-                            <el-menu-item v-else class="mylogin" index="/Logoff" style="float:right">
+                            <el-menu-item v-else class="mylogin"  @click="logout" style="float:right">
                                 <span>退出登录</span>
                             </el-menu-item>
-                            <el-menu-item index="/about" style="float:right">
+                            <el-menu-item index="/profiles" style="float:right">
                                     个人中心<i class="el-icon-user"/>
                             </el-menu-item>
+                          <el-menu-item index="/order" style="float:right">
+                            <template #title>
+                              我的订单<i class="el-icon-tickets"/>
+                            </template>
+                          </el-menu-item>
+                          <el-menu-item index="/cart" style="float:right">
+                            购物车<i class="el-icon-shopping-cart-1"/>
+                          </el-menu-item>
+                          <el-menu-item index="/favorite" style="float:right">
+                            收藏夹<i class="el-icon-star-on"/>
+                          </el-menu-item>
                         </el-menu>
                     </el-affix>
                 </div>
@@ -53,6 +54,22 @@ import {post} from "@/utils/Network";
 export default {
   name:'App',
   components: {Orderfooter},
+  methods:{
+    logout(){
+      post("/login/logoff").then(res=>{
+        window.localStorage.clear()
+        window.localStorage.setItem("token",res.data.token)
+        this.$store.state.notLogin=true
+        this.$message({
+          type:'success',
+          message:'退出登录'
+        })
+        setTimeout(()=>{
+          this.$router.push({path:'/'})
+        },800)
+      })
+    }
+  },
   data(){
     return{
       activeIndex:''
@@ -72,6 +89,7 @@ export default {
   watch: {
     $route(to, from) {
       this.activeIndex=to.path
+      console.log(this.activeIndex)
     }
   }
 }

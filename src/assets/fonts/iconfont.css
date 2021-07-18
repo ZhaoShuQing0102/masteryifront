@@ -1,6 +1,6 @@
 @font-face {
   font-family: "iconfont"; /* Project id  */
-  src: url('iconfont.ttf?t=1626439747485') format('truetype');
+  src: url('iconfont.ttf?t=1626535684111') format('truetype');
 }
 
 .iconfont {
@@ -31,6 +31,14 @@
   content: "\e650";
 }
 
+.icon-pingjia-:before {
+  content: "\e61a";
+}
+
+.icon-shouhou:before {
+  content: "\e502";
+}
+
 .icon-top1:before {
   content: "\e606";
 }
@@ -41,6 +49,10 @@
 
 .icon-zhifuchenggong:before {
   content: "\e68e";
+}
+
+.icon-ziyuan:before {
+  content: "\e645";
 }
 
 .icon-stars:before {
@@ -68,7 +80,7 @@
 }
 
 .icon-NO6:before {
-  content: "\e61a";
+  content: "\e61b";
 }
 
 .icon-NO_:before {
@@ -79,12 +91,28 @@
   content: "\e61f";
 }
 
+.icon-ReadMore:before {
+  content: "\e6ce";
+}
+
+.icon-shoucang:before {
+  content: "\e64f";
+}
+
+.icon-shop:before {
+  content: "\e505";
+}
+
 .icon-chenggong1:before {
   content: "\e6aa";
 }
 
 .icon-stars1:before {
   content: "\e610";
+}
+
+.icon-daifukuan:before {
+  content: "\e6ab";
 }
 
 .icon-icon_No4:before {
@@ -117,5 +145,13 @@
 
 .icon-NO11:before {
   content: "\e656";
+}
+
+.icon-gengduo-a:before {
+  content: "\e61c";
+}
+
+.icon-che:before {
+  content: "\e508";
 }
 

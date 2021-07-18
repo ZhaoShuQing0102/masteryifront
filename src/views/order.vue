@@ -1,23 +1,27 @@
 <template>
   <div class="home">
     <div v-if="isActive" class="order-detail-interface">
-        <div class="main-nav">
-            <div class="nav-title">
-              <h3 style="padding-left: 50px;line-height: 80px;color:#409EFF;font-weight: 700;font-size: 25px;text-indent: 4em;">我的订单</h3>
-            </div>
 
-        </div>
 
         <div class="waiter" >
           <img src="../assets/image/waiter.png" alt="" @click="clickservice">
         </div>
 
         <div class="main-body">
+          <div class="main-nav">
+            <div class="nav-title">
+              <h3 style="text-align:left;line-height: 80px;color:#409EFF;font-weight: 700;font-size: 25px;text-indent: 1em;">我的订单</h3>
+            </div>
+
+          </div>
           <el-tabs v-model="activeName" type="card" @tab-click="handleClick" style="width: 90%;margin-left: 5%;
-          margin-top: 2%;font-size: 20px;background-color: white;height: 5vh">
+          ;font-size: 20px;background-color: white;height: 5vh">
             <el-tab-pane label="全部订单" name="first"></el-tab-pane>
-            <el-tab-pane label="未支付订单" name="second"></el-tab-pane>
-            <el-tab-pane label="已支付订单" name="third"></el-tab-pane>
+            <el-tab-pane label="未支付" name="second"></el-tab-pane>
+            <el-tab-pane label="运输中" name="third"></el-tab-pane>
+            <el-tab-pane label="待评价" name="fourth"></el-tab-pane>
+
+
           </el-tabs>
 
           <div class="order-itemlist" >
@@ -40,6 +44,18 @@
               </div>
               <div v-else-if="displaymode === 3">
                 <orderitem v-if="hav_list.length" v-for="(ordertemp,index) in payData"
+                           :key="new Date().getTime()" :order="orders[order_id_list.indexOf(ordertemp[0].orderId)]" :index="index"
+                           :orderItem="ordertemp" @toorderdetail="toorderdetail">
+                </orderitem>
+              </div>
+              <div v-else-if="displaymode === 4">
+                <orderitem v-if="com_list.length" v-for="(ordertemp,index) in comData"
+                           :key="new Date().getTime()" :order="orders[order_id_list.indexOf(ordertemp[0].orderId)]" :index="index"
+                           :orderItem="ordertemp" @toorderdetail="toorderdetail">
+                </orderitem>
+              </div>
+              <div v-else-if="displaymode === 4">
+                <orderitem v-if="succ_list.length" v-for="(ordertemp,index) in succData"
                            :key="new Date().getTime()" :order="orders[order_id_list.indexOf(ordertemp[0].orderId)]" :index="index"
                            :orderItem="ordertemp" @toorderdetail="toorderdetail">
                 </orderitem>
@@ -92,7 +108,11 @@ import {get,post} from "@/utils/Network";
         orders:[],
         unpayData:[],
         payData:[],
-        activeName:'first'
+        activeName:'first',
+        comData:[],
+        com_list:[],
+        succ_list:[],
+        succData:[]
       };
     },
     mounted() {
@@ -103,7 +123,8 @@ import {get,post} from "@/utils/Network";
         if(tab.props.name==='first') this.showall()
         if(tab.props.name==='second') this.showhavnot()
         if(tab.props.name==='third') this.showhav()
-
+        if(tab.props.name==='fourth') this.showCom()
+        if(tab.props.name==='fifth') this.showSucc()
       },
       toorderdetail(order_id,isActive){
         this.isActive = isActive
@@ -130,10 +151,24 @@ import {get,post} from "@/utils/Network";
 
           let tempdata3 = []
           for(let i in res.data.data){
-            if (res.data.data[i].orderStatus === 2 || res.data.data[i].orderStatus === 3){
+            if (res.data.data[i].orderStatus === 2){
               tempdata3.push(res.data.data[i].orderId)
             }
           }
+          let tempdata4=[]
+          for(let i in res.data.data){
+            if (res.data.data[i].orderStatus === 3){
+              tempdata4.push(res.data.data[i].orderId)
+            }
+          }
+          let tempdate5=[]
+          for(let i in res.data.data){
+            if (res.data.data[i].orderStatus === 7){
+              tempdata4.push(res.data.data[i].orderId)
+            }
+          }
+          this.succ_list=tempdate5
+          this.com_list=tempdata4
           this.hav_list = tempdata3
           if(this.order_id_list.length>0){
               post("/orderItem/order-goods",QS.stringify({order_id:this.order_id_list},{indices:false})).then(res=>{
@@ -142,6 +177,9 @@ import {get,post} from "@/utils/Network";
                   this.unpayData=res.data.data
                   post("/orderItem/order-goods",QS.stringify({order_id:this.hav_list},{indices:false})).then(res=>{
                     this.payData=res.data.data
+                    post("/orderItem/order-goods",QS.stringify({order_id:this.com_list},{indices:false})).then(res=>{
+                      this.comData=res.data.data
+                    })
                     console.log("---------------")
                     console.log(this.orders.filter(data=>data.orderId===1))
 
@@ -168,6 +206,18 @@ import {get,post} from "@/utils/Network";
       showhav(){
         this.displaymode = 3
       },
+      showCom(){
+        this.displaymode= 4
+      },
+      showSucc(){
+        if(this.succ_list.length>0){
+          post("/orderItem/order-goods",QS.stringify({order_id:this.succ_list},{indices:false})).then(res=>{
+            this.succData=res.data.data
+            this.displaymode= 5
+          })
+        }
+
+      }
     }
   }
 </script>
@@ -176,11 +226,13 @@ import {get,post} from "@/utils/Network";
   height:80px;
   width: 90%;
   margin-left: 5%;
+  padding-bottom: 2%;
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
 }
 .nav-title {
   float: left;
+  text-align: left;
 }
 
 .waiter {

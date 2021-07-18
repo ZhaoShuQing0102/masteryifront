@@ -11,6 +11,8 @@ import categories from "@/views/categories";
 import confirmorder from "@/views/confirmorder";
 import TradeSuccess from "@/views/TradeSuccess";
 import SearchPage from "@/views/SearchPage";
+import CommentGood from "@/views/CommentGood";
+import profiles from "@/views/profiles";
 
 
 const routes = [
@@ -18,43 +20,67 @@ const routes = [
     path: '/',
     name: 'Home',
     component: shouye,
+    meta:{
+      title:'易大师购物'
+    }
   },
   {
-    path: '/about',
-    name: 'About',
+    path: '/profiles',
+    name: 'profiles',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    component: profiles,
+    meta:{
+      title:'个人中心'
+    },
   },
   {
     path: '/login',
     name: 'Login',
+    meta:{
+      title:'登录'
+    },
     component: () => import(/* webpackChunkName: "about" */ '../views/Login.vue')
   },
   {
     path: '/order',
     name: 'order',
+    meta:{
+      title:'我的订单'
+    },
     component: () => import('../views/order')
   },
   {
     path:'/Orderdetail/',
     name: 'Orderdetail',
+    meta:{
+      title:'订单详情'
+    },
     component: Orderdetail
   },
   {
     path: '/cart',
     name: 'Cart',
+    meta:{
+      title:'我的购物车'
+    },
     component: cart
   },
   {
     path: '/favorite',
     name: 'favorite',
+    meta:{
+      title:'收藏夹'
+    },
     component: favorite
   },
   {
     path: '/shopdetail/:id',
     name: 'shopdetail',
+    meta:{
+      title:'商品详情'
+    },
     component: () => import(/* webpackChunkName: "about" */ '../views/shopdetail.vue'),
   },
   {
@@ -64,28 +90,51 @@ const routes = [
   },
   {
     path: '/secondskill',
+    meta:{
+      title:'秒杀活动'
+    },
     component: secondskill
   },
   {
     path: '/categoryitem/:id',
     name: 'categoryitem',
+
     component: () => import(/* webpackChunkName: "about" */ '../views/categoryitem.vue'),
   },
   {
     path: '/categories',
+    meta:{
+      title:'商品分类'
+    },
     component: categories
   },
   {
     path: '/payfororder',
+    meta:{
+      title:'订单支付'
+    },
     component: confirmorder
   },
   {
     path:'/tradesuccess',
+    meta:{
+      title:'交易成功'
+    },
     component: TradeSuccess
   },
   {
     path: '/search',
+    meta:{
+      title:'搜索'
+    },
     component: SearchPage
+  },
+  {
+    path:'/comment',
+    meta:{
+      title:'评价'
+    },
+    component: CommentGood
   }
 ]
 
@@ -95,10 +144,13 @@ const router = createRouter({
 })
 
 router.beforeEach((to,from,next)=>{
-
+  if(to.meta.title){
+    document.title=to.meta.title
+  }
   if(to.path==='/order'||to.path==='/favorite'||to.path==='/cart'||to.path==='/about'
       ||to.path==='/payfororder'||to.path==='/tradesuccess'||to.path==='/secondskill'){
     if(window.localStorage.getItem("token")===null||window.localStorage.getItem("token")===undefined){
+      document.title="登录"
       next({
         path:'/login'
       })
@@ -107,10 +159,13 @@ router.beforeEach((to,from,next)=>{
       post("/login/token").then(res=>{
         console.log(res.data);
         if(res.data===true) next()
-        else next({
-          path:'/login',
-          component: () => import(/* webpackChunkName: "about" */ '../views/Login.vue')
-        })
+        else {
+          document.title="登录"
+          next({
+            path: '/login',
+            component: () => import(/* webpackChunkName: "about" */ '../views/Login.vue')
+          })
+        }
       })
     }
   }

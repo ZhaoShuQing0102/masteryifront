@@ -1,14 +1,18 @@
 <template>
   <div class="confirmorder" style="background-color: white">
 
-    <div class="confirm-nav">
-      <div class="nav-head" style="text-align: left">
-        <h5 style="font-size: 30px">确认订单</h5>
+    <div class="confirm-nav" style="position:relative;">
+      <div class="nav-head" style="text-align: left;width: 50%">
+        <h5 style="font-size: 30px">请确认订单</h5>
       </div>
-      <div class="nav-head-id" style="text-align: right">
+      <div class="nav-head-id" style="text-align: left;width: 50%">
 
-          <h5 style="font-size: 18px;margin-top: 20px;margin-right: 30px">订单号 {{order.orderNo}}</h5>
+          <h5 style="font-size: 16px;margin-top: 20px;margin-left: 10px">订单号 {{order.orderNo}}</h5>
 
+      </div>
+      <div style="position:absolute;top:20px;right:0;width: 40%;font-size: 20px;text-align: right;line-height:300%;margin-right: 50px">
+        支付剩余时间：
+        <countdown2 :endTime="endTime" style="float:right;height: 80px;font-size: 36px;font-style: normal"></countdown2>
       </div>
     </div>
 
@@ -20,7 +24,7 @@
       <el-table-column
           label="商品"
           prop="goodsName"
-          width="200">
+          width="350">
         <template #default="scope">
           <img v-if="scope.row.goodsCoverUrl==='null'||scope.row.goodsCoverUrl===null" alt="" src="../assets/image/amani.jpg" style="width: 70px;float: left">
           <img v-else :src="scope.row.goodsCoverUrl" alt="" style="width: 70px;float: left">
@@ -31,7 +35,7 @@
       <el-table-column
           label="规格"
           prop="userName"
-          width="250">
+          width="220">
         <template #default="scope">
           <span style="height: 50px" >{{ orderdesc(scope.row.description) }}</span>
         </template>
@@ -39,7 +43,7 @@
       <el-table-column
           label="单价"
           prop="singlePrice"
-          width="220" >
+          width="200" >
         <template #default="scope">
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-newbimoney"></use>
@@ -50,12 +54,12 @@
       <el-table-column
           label="数量"
           prop="goodsNum"
-          width="190">
+          width="170">
       </el-table-column>
       <el-table-column
           label="小计"
           prop="goodsNum"
-          width="250">
+          width="200">
         <template #default="scope">
 
           <svg class="icon" aria-hidden="true">
@@ -77,20 +81,20 @@
       <div class="total-price" style="float: left;width: 10%;line-height: 40px;text-align: right;margin-left: 66%;font-size: 20px">{{'￥'+order.orderTotalPrice}}</div>
     </div>
 
-    <div class="receipt" style="height: 150px;margin-top: 1px;border: 1px solid #DDDDDD">
+    <div class="receipt" style="height: 150px;margin-top: 1px;border-top: 1px solid #DDDDDD;border-bottom: 1px solid #DDDDDD">
       <div class="receipt-info" style="float: left;width: 25%;height: 150px;">
         <h5 style="height: 30px;margin-top: 20px;padding-left: 8%;font-size: 16px">收货信息</h5>
         <div class="rece-name" style="height: 25px;padding-left: 8%">
-          <div class="xingming" style="float: left;">姓名</div>
-          <div class="xingming" style="margin-left: 17%;float: left;">xxx</div>
+          <div class="xingming" style="float: left;">姓名:</div>
+          <div class="xingming" style="margin-left: 17%;float: left;">{{user_name}}</div>
         </div>
         <div class="rece-phonenum" style="height: 25px;margin-top: 5px;padding-left: 8%">
           <div class="lanxidianhua" style="float: left;">联系电话:</div>
-          <div class="lanxidianhua" style="margin-left: 3%;float: left;">xxx</div>
+          <div class="lanxidianhua" style="margin-left: 3%;float: left;">{{user_phone}}</div>
         </div>
         <div class="rece-addr" style="height: 25px;margin-top: 5px;padding-left: 8%">
           <div class="shouhuodizhi" style="float: left;">收货地址:</div>
-          <div class="shouhuodizhi" style="margin-left: 3%;float: left;">xxx</div>
+          <div class="shouhuodizhi" style="margin-left: 3%;float: left;">{{order_addr}}</div>
         </div>
       </div>
       <div class="info-change" style="float: left;width: 20%;height: 150px;">
@@ -106,26 +110,6 @@
       </div>
     </div>
 
-<!--    <div class="confirm-footer" style="height: 150px;">-->
-<!--      <div class="zongji" style="height: 150px;width:20%;padding-left: 80%;">-->
-<!--        <div class="real-pay" style="height: 80px;">-->
-<!--          <div class="yingfujine" style="margin-left: 8%;margin-top:40px ;width: 50%;font-size: 20px;float: left;">应付金额:</div>-->
-<!--          <div class="yingfujine" style="width: 30%;font-size: 20px;margin-top: 40px;float: left;color: #F59A23;margin-left: 10%;">{{ totalPrice + randomfreight }}元</div>-->
-<!--        </div>-->
-<!--        <div class="footer-button" style="height: 70px;">-->
-<!--          <div class="to-chart" style="float: left;width: 50%;height: 70px;">-->
-<!--            <el-button round size="small" style="margin-top: 18px;margin-left: 10%;">返回购物车</el-button>-->
-<!--          </div>-->
-<!--          <div class="topay" style="float: left;width: 50%;height: 70px">-->
-<!--            <el-button type="danger" size="medium" round style="margin-top: 15px;"-->
-<!--                       @click="topay">-->
-<!--              立即付款-->
-<!--&lt;!&ndash;              接口&ndash;&gt;-->
-<!--            </el-button>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
     <div style="width: 100%;min-height: 80px;margin-top: 25px;position: relative">
       <div style="margin-right: 20px;margin-left: 200px;position: absolute;right: 20px;font-size: 24px">
         应付金额<span style="margin-left: 20px;color: #F59A23;font-size: 32px"><svg class="icon" aria-hidden="true">
@@ -143,7 +127,7 @@
     </div>
     <div class="aaa"></div>
 
-    <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
+    <el-dialog title="收货信息" v-model="dialogFormVisible">
       <el-form>
         <el-form-item label="姓名" :label-width="formLabelWidth">
           <el-input v-model="user_name" autocomplete="off"></el-input>
@@ -157,7 +141,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="confirmmodifi">确 定</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -171,12 +155,14 @@
 import {get,post} from "@/utils/Network";
 import QS from "qs"
 import Moment from 'moment'
+import countdown2 from "@/components/countdown2";
 
 import * as math from "mathjs";
 import $ from 'jquery';
 
 export default {
   name: "confirmorder",
+  components:{countdown2},
   data(){
     return{
       user_id:1,
@@ -186,7 +172,9 @@ export default {
       formLabelWidth: '120px',
       user_name: '',
       user_phone: '',
-      order:''
+      order:'',
+      order_addr:'',
+      endTime:''
     }
   },
   computed:{
@@ -204,6 +192,9 @@ export default {
     }
   },
   mounted() {
+    console.log("2222222222222222222")
+    this.endTime=Moment().add(30, "minutes").format("YYYY-MM-DD HH:mm:ss")
+
     this.order_id=this.$route.query.order_id
     this.getitem(this.order_id)
     this.getorderAddr()
@@ -231,6 +222,10 @@ export default {
       post('/orderItem/order-goods',QS.stringify({order_id:order_id}))
           .then(res => {
             this.list = res.data.data[0]
+            post("/user/getuser").then(res=>{
+              this.user_name=res.data.data.userName
+              this.user_phone=res.data.data.phoneNum
+            })
           })
     },
     payNow(){
@@ -249,6 +244,7 @@ export default {
       post('/order/getOrderByid',QS.stringify({order_id:this.order_id}))
           .then(res => {
             this.order = res.data.data
+            this.order_addr=res.data.data.orderAddr
           })
     }
   }
@@ -279,7 +275,7 @@ ul,ol {
   /*margin-top: 10px;*/
   /*line-height: 60px;*/
   font-size: 26px;
-  padding-top: 30px;
+  padding-top: 15px;
   padding-left: 10px;
 }
 .confirm-nav .nav-head-id {

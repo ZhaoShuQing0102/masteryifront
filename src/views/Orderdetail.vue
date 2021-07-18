@@ -13,10 +13,11 @@
                     <el-button type="primary" size="small" round>联系客服</el-button>
                   </div></el-col>
                   <el-col :span="2" ><div class="mainnavservice">
-                    <el-button type="danger" size="small" round>取消订单</el-button>
+                    <el-button v-if="orderstatus===1||orderstatus===2" type="danger" size="small" round>取消订单</el-button>
+                    <el-button v-else type="danger" size="small" round>申请退款</el-button>
                   </div></el-col>
                   <el-col :span="2" ><div class="mainnavservice">
-                    <el-button type="success" size="small" round @click="topay">立即付款</el-button>
+                    <el-button v-if="orderstatus===1" type="success" size="small" round @click="topay">立即付款</el-button>
                   </div></el-col>
                 </el-row>
               </div>
@@ -157,8 +158,11 @@
                 </template>
               </el-table-column>
               <el-table-column label="操作" width="150">
-                <template #default="scope">
-                  <div class="item-service"><a href="#">申请售后</a></div>
+                <template v-if="orderstatus===3" #default="scope">
+                  <div class="item-service"><a href="javascript:void(0)" @click="goCom(scope.row.goodsId,scope.row.id)">立即评价</a></div>
+                </template>
+                <template v-else #default="scope">
+                  <div class="item-service"><a href="javascript:void(0)" @click="goShop(scope.row.goodsId)">查看商品</a></div>
                 </template>
               </el-table-column>
               <el-table-column
@@ -203,13 +207,13 @@
                         <dl>
                           <dt></dt>
                           <dd>
-                              <div class="orderstatus-icon" v-if="orderstatus">
+                              <div class="orderstatus-icon" v-if="orderstatus!==1">
                                 <i class="el-icon-success"></i>
                               </div>
                               <div class="orderstatus-icon" v-else>
                                 <i class="el-icon-error"></i>
                               </div>
-                              <div class="orderstatus" v-if="orderstatus">交易成功</div>
+                              <div class="orderstatus" v-if="orderstatus!==1">交易成功</div>
                               <div class="orderstatus" v-else>未交易成功</div>
                           </dd>
                           <dd>
@@ -312,6 +316,24 @@ export default {
     this.getitem(this.order_id)
   },
   methods:{
+    goShop(id){
+      this.$router.push({
+        path:'/shopdetail/'+id,
+        params:{
+          id:id
+        }
+      })
+    },
+    goCom(goodId,id){
+      this.$router.push({
+        path:'/comment',
+        query:{
+          goodId:goodId,
+          id:id,
+          orderId:this.order_id
+        }
+      })
+    },
     topay(){
       post('/trade/pay',QS.stringify({order_id:this.order_id}))
           .then(res => {
@@ -331,7 +353,6 @@ export default {
     },
     getorder_id(){
       this.order_id = this.$route.query.order_id
-      console.log(this.order_id)
     },
     getorder(order_id){
       console.log(this.order_id)

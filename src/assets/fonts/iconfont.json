@@ -41,6 +41,20 @@
       "unicode_decimal": 58960
     },
     {
+      "icon_id": "1982357",
+      "name": "待评价",
+      "font_class": "pingjia-",
+      "unicode": "e61a",
+      "unicode_decimal": 58906
+    },
+    {
+      "icon_id": "2112014",
+      "name": "售后",
+      "font_class": "shouhou",
+      "unicode": "e502",
+      "unicode_decimal": 58626
+    },
+    {
       "icon_id": "2180756",
       "name": "top",
       "font_class": "top1",
@@ -60,6 +74,13 @@
       "font_class": "zhifuchenggong",
       "unicode": "e68e",
       "unicode_decimal": 59022
+    },
+    {
+      "icon_id": "4856432",
+      "name": "待收货",
+      "font_class": "ziyuan",
+      "unicode": "e645",
+      "unicode_decimal": 58949
     },
     {
       "icon_id": "5008171",
@@ -107,8 +128,8 @@
       "icon_id": "8402197",
       "name": "NO 1",
       "font_class": "NO6",
-      "unicode": "e61a",
-      "unicode_decimal": 58906
+      "unicode": "e61b",
+      "unicode_decimal": 58907
     },
     {
       "icon_id": "11444973",
@@ -125,6 +146,27 @@
       "unicode_decimal": 58911
     },
     {
+      "icon_id": "13027437",
+      "name": "further reading_more",
+      "font_class": "ReadMore",
+      "unicode": "e6ce",
+      "unicode_decimal": 59086
+    },
+    {
+      "icon_id": "13526258",
+      "name": "收 藏 (1)",
+      "font_class": "shoucang",
+      "unicode": "e64f",
+      "unicode_decimal": 58959
+    },
+    {
+      "icon_id": "15054628",
+      "name": "购物车-23",
+      "font_class": "shop",
+      "unicode": "e505",
+      "unicode_decimal": 58629
+    },
+    {
       "icon_id": "15695284",
       "name": "成功",
       "font_class": "chenggong1",
@@ -137,6 +179,13 @@
       "font_class": "stars1",
       "unicode": "e610",
       "unicode_decimal": 58896
+    },
+    {
+      "icon_id": "16210448",
+      "name": "待付 款",
+      "font_class": "daifukuan",
+      "unicode": "e6ab",
+      "unicode_decimal": 59051
     },
     {
       "icon_id": "16809685",
@@ -193,6 +242,20 @@
       "font_class": "NO11",
       "unicode": "e656",
       "unicode_decimal": 58966
+    },
+    {
+      "icon_id": "20997026",
+      "name": "更  多",
+      "font_class": "gengduo-a",
+      "unicode": "e61c",
+      "unicode_decimal": 58908
+    },
+    {
+      "icon_id": "22918247",
+      "name": "购物车",
+      "font_class": "che",
+      "unicode": "e508",
+      "unicode_decimal": 58632
     }
   ]
 }

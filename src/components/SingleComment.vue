@@ -1,7 +1,8 @@
 <template>
 <div style="width: 100%;margin-top: 15px;border-bottom: 2px solid #E4E7ED" >
   <div style="position: relative;text-align: left">
-  <el-avatar :size="70" :src="circleUrl"></el-avatar>
+  <el-avatar v-if="com.userImg===null||com.userImg==='null'" :size="70" :src="circleUrl"></el-avatar>
+  <el-avatar v-else :size="70" :src="com.userImg"></el-avatar>
   <span style="margin-left: 25px;position:absolute;top:0;font-size: 24px;color: #606266">{{com.userName}}</span>
   <span style="margin-left: 25px;color: #909399;font-size: 16px">
     {{com.ftime}}<span style="margin-left: 80px">购买了 {{getSpec(com.description)}}</span>
@@ -24,7 +25,7 @@
   <div id="reply" v-if="showReply" style="width: 74%;margin-left: 13%">
     <SingleReply v-for="item in replys" :reply="item"></SingleReply>
   </div>
-  <div style="margin-bottom: 15px;margin-left: 9%">
+  <div style="margin-bottom: 15px;margin-left: 9%;text-align: left">
   <el-input style="width: 250px;margin-right: 20px" placeholder="立即回复" v-model="newComm"></el-input>
   <el-button type="primary" @click="newComment" round>回复</el-button>
   </div>
@@ -81,9 +82,9 @@ export default {
         });
       }
       else {
-        axios.post('http://localhost:8083/comment/addreply',QS.stringify({goodId:this.com.toGoodId,userId:1,content:this.newComm,toComId:this.com.commentId})).then(res=>{
+        post('/comment/addreply',QS.stringify({goodId:this.com.toGoodId,content:this.newComm,toComId:this.com.commentId})).then(res=>{
           if(res.data.code===200){
-              axios.post("http://localhost:8083/comment/replysbycomid",QS.stringify({comId:this.com.commentId})).then(res=>{
+              post("/comment/replysbycomid",QS.stringify({comId:this.com.commentId})).then(res=>{
               this.replys=res.data.data
               this.$message({
                 type: 'success',

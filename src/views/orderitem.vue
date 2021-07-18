@@ -82,8 +82,11 @@
               </template>
           </el-table-column>
           <el-table-column label="操作" width="150">
-            <template #default="scope">
-              <div class="item-service"><a href="#">申请售后</a></div>
+            <template v-if="order.orderStatus===3" #default="scope">
+              <div class="item-service"><a href="javascript:void(0)" @click="goCom(scope.row.goodsId,scope.row.id)">立即评价</a></div>
+            </template>
+            <template v-else #default="scope">
+              <div class="item-service"><a href="javascript:void(0)" @click="goShop(scope.row.goodsId)">查看商品</a></div>
             </template>
           </el-table-column>
           <el-table-column
@@ -96,8 +99,14 @@
           <div class="item-status" v-if="order.orderStatus === 1" style="">
             <el-tag type="danger" style="font-size: 18px">交易状态:未付款</el-tag>
           </div>
+          <div class="item-status" v-else-if="order.orderStatus === 2" style="">
+            <el-tag  style="font-size: 18px">交易状态:运输中</el-tag>
+          </div>
+          <div class="item-status" v-else-if="order.orderStatus === 7" style="">
+            <el-tag  style="font-size: 18px" type="success">交易状态:已完成</el-tag>
+          </div>
           <div class="item-false" v-else>
-            <el-tag style="font-size: 18px">交易状态:已付款</el-tag>
+            <el-tag style="font-size: 18px" type="warning">交易状态:待评价</el-tag>
           </div>
           <div style="float: right;margin-right: 25px;font-size: 24px;padding-bottom:40px">
             共计:<svg class="icon" aria-hidden="true">
@@ -106,51 +115,6 @@
           </div>
         </div>
 
-<!--        <ul class="order-item-list">-->
-<!--          <li class="order-item" v-for="(item,index) in orderItem" :key="new Date().getTime()">-->
-<!--            <el-row>-->
-<!--              <el-col :span="6">-->
-<!--                <div class="item-name">-->
-<!--                  <div >-->
-<!--                    <img src="../assets/image/amani.jpg" alt="这里是图片" class="item-image">-->
-<!--                  </div>-->
-<!--                  <div class="item-info">-->
-<!--                    {{item.goodsName + ',' + item.goodsInformation}}-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </el-col>-->
-<!--              <el-col :span="2" :offset="1">-->
-<!--                <div class="item-info-desc">-->
-<!--                  {{desctemp(item)}}-->
-<!--                </div>-->
-<!--              </el-col>-->
-<!--              <el-col :span="1" :offset="1">-->
-<!--                <div class="itemprice">{{'￥'+item.singlePrice}}</div>-->
-<!--              </el-col>-->
-<!--              <el-col :span="1" :offset="1">-->
-<!--                <div class="item-num">{{item.goodsNum}}</div>-->
-<!--              </el-col>-->
-<!--              <el-col :span="2">-->
-<!--                <div class="item-service"><a href="#">申请售后</a></div>-->
-<!--              </el-col>-->
-<!--              <el-col :span="2" :offset="1" ><i class="el-icon-s-custom"></i> 名字</el-col>-->
-<!--              <el-col :span="4" :offset="1"><i class="el-icon-location"></i> {{orderaddr}}</el-col>-->
-<!--            </el-row>-->
-<!--          </li>-->
-<!--          <div class="item-footer">-->
-<!--            <el-row >-->
-<!--              <el-col :span="4" :offset="2"><div class="item-total">总价格:{{totalPrice}}元</div></el-col>-->
-<!--              <el-col :span="4" :offset="12">-->
-<!--                <div class="item-status" v-if="order_status === 1">-->
-<!--                  交易状态:未付款-->
-<!--                </div>-->
-<!--                <div class="item-false" v-else>-->
-<!--                  交易状态:已付款-->
-<!--                </div>-->
-<!--              </el-col>-->
-<!--            </el-row>-->
-<!--          </div>-->
-<!--        </ul>-->
       </div>
     </div>
   </div>
@@ -198,33 +162,30 @@ export default {
     // // this.getorderstatus()
     // this.getorderCreattime()
     if(this.index===0) this.showHeader=true
-    console.log(this.order.orderStatus)
   },
   methods:{
     toOrderdetail(order_id){
       let isActive = false
       this.$emit('toorderdetail',order_id,isActive)
     },
-    getitem(order_id){
-      // post('/orderItem/order-goods',QS.stringify({order_id:this.order_id}))
-      // .then(res => {
-      //   // console.log(res.data.data[0][0].description)
-      //   // let desctemp = res.data.data[0][0].description
-      //   // let temp11 = Object.keys(desctemp)
-      //   this.list = res.data.data[0]
-      //   console.log("========")
-      //   console.log(this.list)
-      //   // let data = res.data.data
-      //   // this.list = res.data.data
-      //   // console.log(data)
-      // })
+    goShop(id){
+      this.$router.push({
+        path:'/shopdetail/'+id,
+        params:{
+          id:id
+        }
+      })
     },
-    // getorderstatus(order_id){
-    //   post('/order/getStatus',QS.stringify({order_id:this.order_id}))
-    //   .then(res => {
-    //     this.order_status = res.data.data
-    //   })
-    // },
+    goCom(goodId,id){
+      this.$router.push({
+        path:'/comment',
+        query:{
+          goodId:goodId,
+          id:id,
+          orderId:this.order_id
+        }
+      })
+    },
 
     orderdesc(val){
       let res=''
