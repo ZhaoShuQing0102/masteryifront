@@ -146,28 +146,12 @@ export default {
             disabled:false,
             isCollect:false,
             collectId: null,
-            parentName:''
+            parentName:'',
+            islogged:false
         }
     },
     methods: {
-        islogged(){
-          if(window.localStorage.getItem("token")===null||window.localStorage.getItem("token")===undefined){
-            this.$store.state.notLogin=true
-            return false;
-          }
-          else{
-            post("/login/token").then(res=>{
-              if(res.data===true) {
-                this.$store.state.notLogin = false
-                return true;
-              }
-              else {
-                this.$store.state.notLogin = true
-                return false;
-              }
-            })
-          }
-        },
+
         changespec() {
             post("/goods/stockPrice", Qs.stringify({good_id: this.goodsId,specs:this.choosespec},{indices:false}))
                 .then(res => {
@@ -197,7 +181,7 @@ export default {
                 })
         },
         buy() {
-            if(this.islogged()){
+            if(this.islogged){
               post("/order/creatOrder", Qs.stringify({goods: this.spec_id,num:this.num,singlePrice:this.singelprice,status:0,price:this.singelprice*this.num,address:this.address})).then(res=>{
                 let orderId=res.data.data.order_id
                 this.$router.push({
@@ -211,7 +195,7 @@ export default {
             else this.$router.push({path:'/login'})
         },
         addcart() {
-            if(this.islogged()){
+          if(this.islogged){
               if(this.spec_id != null) {
                 post("/cartitem/addcartitem",Qs.stringify({goodsId:this.spec_id,goodsNum:this.num}))
                     .then(res => {
@@ -228,7 +212,7 @@ export default {
             else this.$router.push({path:'/login'})
         },
         collect() {
-            if(this.islogged()){
+            if(this.islogged){
               if(this.isCollect) {
                 post("/collect/deletefromcollect", Qs.stringify({collectId:this.collectId}))
                 this.isCollect = false;
@@ -272,7 +256,22 @@ export default {
                           for(let index in this.specmap)
                             this.choosespec.push(this.specmap[index][0].id)
                           this.changespec()
-
+                          if(window.localStorage.getItem("token")===null||window.localStorage.getItem("token")===undefined){
+                            this.$store.state.notLogin=true
+                            this.islogged=false
+                          }
+                          else{
+                            post("/login/token").then(res=>{
+                              if(res.data===true) {
+                                this.$store.state.notLogin = false
+                                this.islogged= true;
+                              }
+                              else {
+                                this.$store.state.notLogin = true
+                                this.islogged= false;
+                              }
+                            })
+                          }
                         })
                   })
             })

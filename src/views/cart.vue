@@ -6,10 +6,10 @@
       <el-button plain round :disabled="len===0" type="danger" icon="el-icon-delete" size="mini" style="margin-top: 10px" @click="delChosed">删除</el-button>
     </div>
   </div>
-  <div style="width: 100%;max-height: 100vh;overflow: auto">
+  <div style="width: 100%;min-height:60vh;overflow: auto">
     <el-table
         :row-key="(row)=>{return row.id}"
-      :data="tableData.filter(data => !search || data.userName.toLowerCase().includes(search.toLowerCase())).slice((currentPage-1)*pageSize,currentPage*pageSize)"
+      :data="tableData"
       style="width: 100% ;font-size: 16px" @selection-change="handleSelectionChange" ref="multipleTable"
       :row-style="{height: '80px'}">
     <el-table-column

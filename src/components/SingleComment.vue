@@ -47,28 +47,12 @@ export default {
       com:[],
       showReply:false,
       replys:[],
-      newComm:''
+      newComm:'',
+      islogged:false
     }
   },
   methods:{
-    islogged(){
-      if(window.localStorage.getItem("token")===null||window.localStorage.getItem("token")===undefined){
-        this.$store.state.notLogin=true
-        return false;
-      }
-      else{
-        post("/login/token").then(res=>{
-          if(res.data===true) {
-            this.$store.state.notLogin = false
-            return true;
-          }
-          else {
-            this.$store.state.notLogin = true
-            return false;
-          }
-        })
-      }
-    },
+
     getSpec(val){
       if(val!==undefined) {
         let res = ''
@@ -92,7 +76,7 @@ export default {
       })
     },
     newComment(){
-      if(this.islogged()){
+      if(this.islogged){
         if(this.newComm===''){
           console.log(this.com);
           this.$message({
@@ -128,6 +112,22 @@ export default {
   },
   mounted() {
     this.com=this.comment
+    if(window.localStorage.getItem("token")===null||window.localStorage.getItem("token")===undefined){
+      this.$store.state.notLogin=true
+      this.islogged=false
+    }
+    else{
+      post("/login/token").then(res=>{
+        if(res.data===true) {
+          this.$store.state.notLogin = false
+          this.islogged= true;
+        }
+        else {
+          this.$store.state.notLogin = true
+          this.islogged= false;
+        }
+      })
+    }
   }
 }
 </script>
