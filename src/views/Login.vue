@@ -183,7 +183,7 @@ export default defineComponent({
             .then(res => {
               window.localStorage.setItem("token",res.data.token)
               console.log(res.data.token)
-              if (res.data.token !== null) {
+              if (res.data.token !== '') {
                 this.$store.state.notLogin=false
                 this.$message({
                   type:'success',
@@ -195,8 +195,8 @@ export default defineComponent({
               } else {
                 this.Lkey = false;
                 this.$message({
-                  type: 'warning',
-                  message: '不能为空'
+                  type: 'error',
+                  message: '登陆失败'
                 })
               }
             })

@@ -182,7 +182,7 @@ export default {
         query:{
           goodId:goodId,
           id:id,
-          orderId:this.order_id
+          orderId:this.order.orderId
         }
       })
     },

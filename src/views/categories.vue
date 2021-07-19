@@ -1,12 +1,12 @@
 <template>
   <div class="categories" style="min-height: 1200px">
 
-    <div class="nav" style="height:100px;border-bottom: 1px solid #DDDDDD;width: 84%;margin-left: 8%;">
-      <div class="yifont" style="float: left;height: 100px;width: 20%;margin-left: 3%;">
+    <div class="nav" style="height:100px;width: 84%;margin-left: 8%;">
+      <div class="yifont" style="float: left;height: 100px;width: 12%;">
         <img src="../assets/image/yifont.png" alt="" style="width: 100%;height: 100%">
       </div>
-      <div class="nav-serach" style="height: 100px;width: 40%;margin-left: 15%;float: left;">
-        <SearchAllGoods style="margin-top: 20px"></SearchAllGoods>
+      <div class="nav-serach" style="height: 100px;width: 40%;margin-left: 25%;float: left;">
+        <SearchAllGoods style="margin-top: 20px" :key="new Date().getTime()"></SearchAllGoods>
       </div>
     </div>
 
@@ -66,10 +66,10 @@
         </ul>
       </div>
 
-      <div class="goods-item" style="width: 100%;height: 350px;">
-        <ul style="height: 100%;width: 100%;overflow: auto;min-height: 400px">
-          <li v-for="(item,index) in goodslist" :key="index" style="cursor:pointer;height: 350px;
-          width: 25%;float: left;border: 1px solid #f2f2f2;background-color: white;margin-right: 10px;margin-top: 10px"
+      <div class="goods-item" style="width: 100%;height: 410px;">
+        <ul style="height: 100%;width: 100%;overflow: auto;min-height: 410px">
+          <li v-for="(item,index) in goodslist" :key="index" style="cursor:pointer;height: 400px;
+          width: 24%;float: left;border: 1px solid #f2f2f2;background-color: white;margin-right: 10px;margin-top: 10px"
           @click="goShop(item.goodsId)">
 
             <div class="goods-info" style="width: 100%;height: 305px;">
@@ -80,12 +80,12 @@
               </div>
               <div class="goods-name" style="height: 20px;width: 100%;
                                     margin-top: 15px;line-height: 20px;text-align: center;font-size: 1.2em;">
-                <h5>{{item.goodsName + ' ' +item.goodsInformation}}</h5>
+                <h5>{{item.goodsName }}</h5>
 <!--                <h5>{{item.goodsInformation}}</h5>-->
               </div>
             </div>
             <div class="goods-price" style="width: 100%;height:45px;text-align: center;line-height: 45px;font-size: 18px;
-                                            color: rgb(221, 69, 69)">
+                                            color: rgb(221, 69, 69);margin-top: 10px;">
               {{'￥' + item.lowPrice}}
             </div>
 
@@ -117,10 +117,10 @@ export default {
       //这个是一个大类下面所有的子类列表
       list:[],
       slidepicture:[
-        {id:0,idView:'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'},
-        {id:1,idView:'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'},
-        {id:2,idView:'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'},
-        {id:3,idView:'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'}
+        {id:0,idView:'http://qw7r9ly4i.hb-bkt.clouddn.com/xiaomi.jpg'},
+        {id:1,idView:'http://qw7r9ly4i.hb-bkt.clouddn.com/%E9%A3%9E%E5%88%A9%E6%B5%A6.jpg'},
+        {id:2,idView:'http://qw7r9ly4i.hb-bkt.clouddn.com/iqoo.jpg'},
+        {id:3,idView:'http://qw7r9ly4i.hb-bkt.clouddn.com/202.jpg'}
       ],
       //这个是每个子类下面的商品
       goodslist:[],

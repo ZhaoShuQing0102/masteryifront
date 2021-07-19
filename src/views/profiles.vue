@@ -2,7 +2,7 @@
   <div class="profiles" >
     <div class="nav" style="width: 100%;height: 80px;background-color: white">
       <div class="w" style="width: 84%;height: 80px;margin-left: 8%;">
-        <div class="logo" style="width: 15%;height: 80px;float: left;">
+        <div class="logo" style="width: 10%;height: 80px;float: left;">
           <img src="../assets/image/yifont.png" alt="" style="width: 100%;height: 100%">
         </div>
         <div style="height: 50%;width: 10%;float: left;margin-top: 35px;font-size: 1.4em;
@@ -102,7 +102,7 @@
               <el-button type="primary" icon="el-icon-edit" circle @click="dialogFormVisible = true"
                          style="float:right;margin-top: 15px;margin-right: 15px "></el-button>
             </div>
-            <div style="width: 30%;height: 200px;float: left;">
+            <div style="width: 60%;height: 200px;float: left;">
               <div style="width: 100%;height: 60px;font-size: 20px;text-align: left;line-height: 60px;margin-top: 10px;">
                 手机号：<b>{{ user.phoneNum }}</b>
               </div>
@@ -137,7 +137,7 @@
                   <!--                    <el-input v-model="form.user_img"></el-input>-->
                   <el-upload
                       class="avatar-uploader"
-                      action="http://localhost:8083/image/upload"
+                      action="http://123.60.213.90:22221/image/upload"
                       :headers="header"
                       :show-file-list="false"
                       :on-success="handleAvatarSuccess"
@@ -394,6 +394,7 @@ export default {
       this.$router.push({path:'/order'})
     },
     handleAvatarSuccess(res, file) {
+      this.form.user_img=res.data
       this.user.userImgUrl = res.data;
     },
     beforeAvatarUpload(file) {

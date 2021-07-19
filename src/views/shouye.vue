@@ -2,10 +2,10 @@
   <div class="shouye">
 
     <div class="nav" style="height:100px;width: 84%;margin-left: 8%;">
-      <div class="yifont" style="float: left;height: 100px;width: 20%;margin-left: 3%;">
+      <div class="yifont" style="float: left;height: 100px;width: 12%;">
         <img src="../assets/image/yifont.png" alt="" style="width: 100%;height: 100%">
       </div>
-      <div class="nav-serach" style="height: 100px;width: 40%;margin-left: 15%;float: left;">
+      <div class="nav-serach" style="height: 100px;width: 40%;margin-left: 25%;float: left;">
         <SearchAllGoods style="margin-top: 20px" :key="new Date().getTime()"></SearchAllGoods>
       </div>
     </div>
@@ -16,8 +16,8 @@
       <div class="left-categories" style="width: 17%;height: 100%;float: left;">
         <div class="jutifenlei" style="width: 100%;height: 496px;margin-top: 0;">
           <div class="category" v-for="(item,index) in categorieslist"  @click="tocategories($event,item)"
-               style="width: 100%;height: 10%;text-align: center;
-                margin-top: 0;border-bottom: 1px solid #DDDDDD;cursor: pointer">
+               style="width: 100%;height: 16.6%;text-align: center;
+                padding-top: 10px;border-bottom: 1px solid #DDDDDD;cursor: pointer">
             <div class="category-item" style="width: 90%;height: 90%;margin-left: 5%;margin-bottom: 5%;">
               <div class="item-name" style="width: 100%;height: 100%;float: left;font-size: 1.2em;color: #666666;
                                               text-align: left;margin-left:15%;line-height: 250%;text-indent: 0.6em">
@@ -46,15 +46,16 @@
           易大师秒杀
         </div>
         <div class="count-down" style="width: 100%;height: 20%;margin-top: 40%;color: #ffffff;text-indent: 4.5em;line-height: 100%">
-          距结束
-          <countdown :endTime="endTime" style="width: 100%;height: 60px;font-size: 1.6em;line-height: 60px;color: #ffffff;font-style: normal;
+          <span v-if="hasSec">距结束</span>
+          <countdown v-if="hasSec" :endTime="endTime" style="width: 100%;height: 60px;font-size: 1.6em;line-height: 60px;color: #ffffff;font-style: normal;
                                                 text-indent: 1.8em;font-weight: 700 "></countdown>
+          <span v-else>暂无秒杀活动</span>
         </div>
       </div>
 <!--      </el-link>-->
 
       <div class="goods-info" style="width: 80%;height: 100%;float: left;background-color: white">
-        <div v-for="(item,index) in secondkill_displaylist" :key="index" style="width: 22%;margin-left: 2%;height: 100%;float: left;border-right: 1px solid #DDDDDD;">
+        <div v-if="hasSec" v-for="(item,index) in secondkill_displaylist" :key="index" style="width: 22%;margin-left: 2%;height: 100%;float: left;border-right: 1px solid #DDDDDD;">
           <div class="goods-picture" style="height: 70%;width: 90%;margin-left: 5%;margin-top: 5%;">
             <img src="../assets/image/huawei.jpg" alt="" style="width: 100%;height: 100%">
 <!--            <img :src="item.goodsCoverUrl" alt="" width="100%" height="100%">-->
@@ -71,6 +72,7 @@
             </div>
           </div>
         </div>
+        <img v-else src="../assets/780.jpg" style="height: 100%;width: 100%" alt="">
       </div>
     </div>
 
@@ -145,8 +147,8 @@
           </div>
           <div style="height: 65px;width: 90%;margin-left: 5%;text-align: center;
                             font-weight: 400;line-height: 30px;cursor:pointer;">
-            <h5 style="font-weight: 400;font-size: 18px">{{item.goodsName}}</h5>
-            <h5 style="font-weight: 400;font-size: 16px">{{item.goodsInformation}}</h5>
+            <h5 style="font-weight: 400;font-size: 18px;text-overflow: ellipsis;white-space: nowrap;overflow: hidden">{{item.goodsName}}</h5>
+            <h5 style="font-weight: 400;font-size: 16px;text-overflow: ellipsis;white-space: nowrap;overflow: hidden">{{item.goodsInformation}}</h5>
           </div>
           <div style="height: 40px;width: 66%;margin-left: 17%;
                       text-align: left;line-height: 40px;color: #c81623;font-weight: 700;font-size: 1.2em">
@@ -168,6 +170,7 @@ import {post,get} from "@/utils/Network";
 import countdown from "@/components/countdown";
 import QS from "qs";
 import SearchAllGoods from "@/components/SearchAllGoods";
+import moment from "moment";
 export default {
   name: "shouye",
   components:{
@@ -184,10 +187,11 @@ export default {
         {id:2,idView:'http://qw7r9ly4i.hb-bkt.clouddn.com/123.jpg'},
         {id:3,idView:'http://qw7r9ly4i.hb-bkt.clouddn.com/124.jpg'}
       ],
-      endTime:'2021-08-29 9:51:00',
+      endTime:'',
       //秒杀接口展示的秒杀商品
       secondkill_displaylist:[],
-      recommendlist:[]
+      recommendlist:[],
+      hasSec:false
     }
   },
   mounted() {
@@ -236,8 +240,19 @@ export default {
                 templist.push(res.data.data[1])
                 templist.push(res.data.data[2])
                 templist.push(res.data.data[3])
-                this.secondkill_displaylist = templist
               }
+              this.secondkill_displaylist = templist
+              if(res.data.data.length!==0){
+                let edatetemp = res.data.data[0].edate
+                let temp5 = new Date(edatetemp*1000)
+                // console.log("///")
+                // console.log(temp5)
+                // console.log(moment(temp5).format('YYYY/MM/DD HH:mm:ss'))
+                this.endTime = moment(temp5).format('YYYY/MM/DD HH:mm:ss')
+                this.hasSec=true
+              }
+
+
               let templist3 = []
               get('/goods/allGoods')
                   .then(res => {

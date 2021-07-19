@@ -74,7 +74,7 @@
 // @ is an alias to /src
 import {defineComponent, ref} from 'vue'
 import axios from "axios";
-import {getHomeAllData} from "../../network/home";
+
 import Activity from "@/views/activity";
 import Categoryitem from "@/views/categoryitem";
 import SearchAllGoods from "@/components/SearchAllGoods";

@@ -113,7 +113,7 @@
               <el-table-column
                   label="商品"
                   prop="goodsName"
-                  width="200">
+                  width="300">
                 <template #default="scope">
                   <img v-if="scope.row.goodsCoverUrl==='null'||scope.row.goodsCoverUrl===null" alt="" src="../assets/image/amani.jpg" style="width: 70px;float: left">
                   <img v-else :src="scope.row.goodsCoverUrl" alt="" style="width: 70px;float: left">
@@ -132,7 +132,7 @@
               <el-table-column
                   label="单价"
                   prop="singlePrice"
-                  width="220" >
+                  width="140" >
                 <template #default="scope">
                   <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-newbimoney"></use>
@@ -143,12 +143,12 @@
               <el-table-column
                   label="数量"
                   prop="goodsNum"
-                  width="150">
+                  width="130">
               </el-table-column>
               <el-table-column
                   label="小计"
                   prop="goodsNum"
-                  width="150">
+                  width="130">
                 <template #default="scope">
 
                   <svg class="icon" aria-hidden="true">
@@ -468,8 +468,15 @@ ul,ol {
   font-size: 14px;
   background-color: #F3F3F3;
 }
-.addrhead,.addr,.order-id, .order-id-head{
+.addrhead, .order-id-head{
   width: 120px;
+  float: left;
+  /*margin-right: 30px;*/
+  height: 100px;
+  line-height: 140px;
+}
+.addr,.order-id{
+  width: 220px;
   float: left;
   /*margin-right: 30px;*/
   height: 100px;

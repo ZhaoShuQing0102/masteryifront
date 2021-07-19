@@ -38,6 +38,7 @@ export default {
         this.$emit("time-end");
       }
       this.time = `${h}:${m}:${s}`; // 需要修改时间样式的话 ，比如需要什么30分钟倒计时，就只保留分和秒
+      if (this.time <= '00:00:00') this.time = '00:00:00'
     },
     formate(time) {
       if (time >= 10) {

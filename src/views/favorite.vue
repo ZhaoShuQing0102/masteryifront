@@ -2,7 +2,7 @@
   <div class="collect" >
 
     <div class="collect-nav" style="height:100px;border-bottom: 1px solid #FFFFFF;">
-      <div class="yifont" style="float: left;margin-left: 15%;margin-top: 1%">
+      <div class="yifont" style="float: left;margin-left: 6%;margin-top: 1%">
         <img src="../assets/images/back.png" style="height: 100px; width: 140px;">
       </div>
       <div class="nav-serach" style="margin-top:2%;margin-left: 15%;float: left;">
@@ -26,13 +26,12 @@
               <img v-if="item.goodsCoverUrl==='null'||item.goodsCoverUrl===null" :src="defaultUrl" alt="" style="height: 150px;width: 150px">
               <img v-else :src="item.goodsCoverUrl" alt="" style="height: 150px;width: 150px">
             </div>
-            <div class="goods-name" style="height: 15px;width: 150px;
-                                    margin-top: 5px;line-height: 15px;text-align: center">
-              <el-link :underline="false" href="javascript:void(0)" type="primary" style="font-size:20px;">
-              {{ item.goodsName }}
-            </el-link>
+            <div class="goods-name" style="height: 25px;width: 150px;
+                                    margin-top: 5px;line-height: 25px;text-align: center">
+                <h5 style="color:RGB(64,158,255);font-size:20px;text-overflow: ellipsis;white-space: nowrap;overflow: hidden">{{ item.goodsName }}</h5>
+
             </div>
-            <div class="goods-price" style="width: 150px;height: 22px;text-align: center;line-height: 22px;font-size: 20px;margin-top: 15px">
+            <div class="goods-price" style="width: 150px;height: 22px;text-align: center;line-height: 22px;font-size: 20px;margin-top: 10px">
               {{'￥' + item.price}}
             </div>
           </div>
